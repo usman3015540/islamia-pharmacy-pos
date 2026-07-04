@@ -24,13 +24,13 @@ A modern Pharmacy POS & Inventory Management System built with HTML, CSS, JavaSc
 ## 📂 Project Structure
 
 ```
-assets/
-css/
-js/
-pages/
-index.html
-login.html
-dashboard.html
+├── assets/
+├── css/
+├── js/
+├── pages/
+├── index.html
+├── login.html
+└── dashboard.html
 ```
 
 ## 🚀 Getting Started
