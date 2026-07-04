@@ -24,13 +24,13 @@ A modern Pharmacy POS & Inventory Management System built with HTML, CSS, JavaSc
 ## 📂 Project Structure
 
 ```
-├── css/
-├── js/
-├── pages/
-├── assets/
-├── index.html
-├── login.html
-└── dashboard.html
+assets/
+css/
+js/
+pages/
+index.html
+login.html
+dashboard.html
 ```
 
 ## 🚀 Getting Started
@@ -44,9 +44,7 @@ A modern Pharmacy POS & Inventory Management System built with HTML, CSS, JavaSc
 
 **Muhammad Usman**
 
-GitHub:
-https://github.com/usman3015540
+GitHub: https://github.com/usman3015540
 
 ---
-
 ⭐ If you like this project, don't forget to star the repository.
