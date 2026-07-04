@@ -1,0 +1,931 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Islam Homeo Pathic Clinic & Store | Complete Homeopathic Care</title>
+    
+    <!-- Google Fonts: Poppins for a premium, modern look -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- FontAwesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Tailwind CSS for rapid, modern styling -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        emerald: {
+                            50: '#ecfdf5',
+                            100: '#d1fae5',
+                            500: '#10b981',
+                            600: '#059669',
+                            700: '#047857',
+                            800: '#065f46',
+                            900: '#064e3b',
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Poppins', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar { width: 10px; }
+        ::-webkit-scrollbar-track { background: #f9fafb; }
+        ::-webkit-scrollbar-thumb { background: #10b981; border-radius: 5px; border: 2px solid #f9fafb; }
+        ::-webkit-scrollbar-thumb:hover { background: #059669; }
+
+        /* Base styles */
+        body { font-family: 'Poppins', sans-serif; background-color: #f9fafb; color: #1f2937; overflow-x: hidden; }
+        
+        /* Smooth Reveal Animation Classes */
+        .reveal { opacity: 0; transform: translateY(40px); transition: all 0.8s cubic-bezier(0.5, 0, 0, 1); }
+        .reveal.active { opacity: 1; transform: translateY(0); }
+        .reveal-delay-1 { transition-delay: 0.1s; }
+        .reveal-delay-2 { transition-delay: 0.2s; }
+        .reveal-delay-3 { transition-delay: 0.3s; }
+        
+        /* Glassmorphism utilities */
+        .glass { background: rgba(255, 255, 255, 0.85); backdrop-filter: blur(12px); border: 1px solid rgba(255, 255, 255, 0.3); }
+        .glass-dark { background: rgba(6, 78, 59, 0.7); backdrop-filter: blur(16px); border: 1px solid rgba(255, 255, 255, 0.1); }
+        
+        /* Custom shadows */
+        .premium-shadow { box-shadow: 0 10px 40px -10px rgba(5, 150, 105, 0.15); }
+        .hover-glow:hover { box-shadow: 0 20px 40px -10px rgba(16, 185, 129, 0.3); }
+        
+        /* Gradient Text */
+        .text-gradient { background-clip: text; -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-image: linear-gradient(to right, #059669, #10b981); }
+
+        /* Orbs Animation for Hero Section */
+        @keyframes blob {
+            0% { transform: translate(0px, 0px) scale(1); }
+            33% { transform: translate(30px, -50px) scale(1.1); }
+            66% { transform: translate(-20px, 20px) scale(0.9); }
+            100% { transform: translate(0px, 0px) scale(1); }
+        }
+        .animate-blob { animation: blob 7s infinite; }
+        .animation-delay-2000 { animation-delay: 2s; }
+        .animation-delay-4000 { animation-delay: 4s; }
+
+        /* Pulse line for process section */
+        @keyframes flow {
+            0% { background-position: -200px 0; }
+            100% { background-position: calc(200px + 100%) 0; }
+        }
+        .process-line {
+            background: linear-gradient(90deg, transparent, rgba(16, 185, 129, 0.4), transparent);
+            background-size: 200px 100%;
+            animation: flow 3s infinite linear;
+        }
+
+        /* Mobile menu slide-in panel */
+        #mobileMenu {
+            position: fixed;
+            top: 0;
+            right: 0;
+            height: 100vh;
+            width: 80%;
+            max-width: 320px;
+            background: white;
+            box-shadow: -10px 0 40px rgba(0,0,0,0.15);
+            transform: translateX(100%);
+            transition: transform 0.35s cubic-bezier(0.5, 0, 0, 1);
+            z-index: 60;
+        }
+        #mobileMenu.open { transform: translateX(0); }
+
+        #mobileMenuOverlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.4);
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.35s ease;
+            z-index: 55;
+        }
+        #mobileMenuOverlay.open { opacity: 1; pointer-events: auto; }
+        
+        /* Mesh Backgrounds */
+        .bg-mesh-light { background-image: radial-gradient(at 0% 0%, hsla(152,82%,95%,1) 0, transparent 50%), radial-gradient(at 50% 0%, hsla(152,82%,95%,1) 0, transparent 50%), radial-gradient(at 100% 0%, hsla(152,82%,95%,1) 0, transparent 50%); }
+        
+        .service-card { transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1); }
+        .service-card:hover { transform: translateY(-8px); border-bottom-color: #10b981; }
+    </style>
+</head>
+<body class="antialiased selection:bg-emerald-500 selection:text-white">
+
+    <!-- Navigation Bar -->
+    <nav class="fixed w-full z-50 glass transition-all duration-300 border-b border-white/50" id="navbar">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-20 items-center">
+                <!-- Logo & Brand Name -->
+                <div class="flex items-center gap-3 group cursor-pointer" onclick="window.scrollTo(0,0)">
+                    <div class="w-12 h-12 bg-gradient-to-br from-emerald-500 to-emerald-700 rounded-2xl flex items-center justify-center text-white text-2xl shadow-lg shadow-emerald-500/30 group-hover:rotate-12 transition-transform duration-300">
+                        <i class="fa-solid fa-leaf"></i>
+                    </div>
+                    <div>
+                        <h1 class="font-bold text-xl leading-tight text-gray-900 group-hover:text-emerald-700 transition-colors">Islam Homeo Pathic</h1>
+                        <p class="text-xs text-emerald-600 font-semibold tracking-wider uppercase">Clinic & Store</p>
+                    </div>
+                </div>
+                
+                <!-- Desktop Menu -->
+                <div class="hidden md:flex space-x-1 items-center">
+                    <a href="#services" class="px-4 py-2 rounded-full text-gray-600 hover:text-emerald-700 hover:bg-emerald-50 font-medium transition-all">Services</a>
+                    <a href="#about" class="px-4 py-2 rounded-full text-gray-600 hover:text-emerald-700 hover:bg-emerald-50 font-medium transition-all">About Us</a>
+                    <a href="#process" class="px-4 py-2 rounded-full text-gray-600 hover:text-emerald-700 hover:bg-emerald-50 font-medium transition-all">Process</a>
+                    <a href="#contact" class="px-4 py-2 rounded-full text-gray-600 hover:text-emerald-700 hover:bg-emerald-50 font-medium transition-all">Contact</a>
+                    
+                    <!-- Admin Login Link (Subtle) -->
+                    <a href="login.html" class="flex items-center gap-2 px-4 py-2 ml-4 rounded-full text-sm text-gray-500 hover:text-white hover:bg-emerald-600 bg-gray-100 transition-all font-medium">
+                        <i class="fa-solid fa-lock"></i> Admin
+                    </a>
+                </div>
+
+                <!-- Mobile Menu Button -->
+                <div class="md:hidden flex items-center">
+                    <button id="openMobileMenuBtn" class="w-10 h-10 flex items-center justify-center rounded-full bg-emerald-50 text-emerald-600 hover:bg-emerald-100 transition-colors focus:outline-none" aria-label="Open menu">
+                        <i class="fa-solid fa-bars-staggered text-xl"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Mobile Menu Overlay (background dim) -->
+    <div id="mobileMenuOverlay"></div>
+
+    <!-- Mobile Menu Slide-in Panel -->
+    <div id="mobileMenu">
+        <div class="flex justify-between items-center px-6 h-20 border-b border-emerald-100 bg-emerald-50/50">
+            <div class="flex items-center gap-3">
+                <div class="w-10 h-10 bg-emerald-600 rounded-xl flex items-center justify-center text-white text-lg shadow-lg">
+                    <i class="fa-solid fa-leaf"></i>
+                </div>
+                <h2 class="font-bold text-gray-900">Menu</h2>
+            </div>
+            <!-- Close (Cross) Button -->
+            <button id="closeMobileMenuBtn" class="w-8 h-8 flex items-center justify-center rounded-full bg-white text-gray-500 hover:text-red-500 shadow-sm transition-colors focus:outline-none" aria-label="Close menu">
+                <i class="fa-solid fa-xmark text-xl"></i>
+            </button>
+        </div>
+        <div class="flex flex-col px-6 py-8 space-y-3">
+            <a href="#services" class="mobile-nav-link text-gray-700 hover:text-emerald-700 hover:bg-emerald-50 font-medium py-3 px-4 rounded-xl transition-all flex items-center gap-3"><i class="fa-solid fa-stethoscope text-emerald-500 w-5"></i> Services</a>
+            <a href="#about" class="mobile-nav-link text-gray-700 hover:text-emerald-700 hover:bg-emerald-50 font-medium py-3 px-4 rounded-xl transition-all flex items-center gap-3"><i class="fa-solid fa-hospital text-emerald-500 w-5"></i> About Us</a>
+            <a href="#process" class="mobile-nav-link text-gray-700 hover:text-emerald-700 hover:bg-emerald-50 font-medium py-3 px-4 rounded-xl transition-all flex items-center gap-3"><i class="fa-solid fa-list-check text-emerald-500 w-5"></i> Process</a>
+            <a href="#contact" class="mobile-nav-link text-gray-700 hover:text-emerald-700 hover:bg-emerald-50 font-medium py-3 px-4 rounded-xl transition-all flex items-center gap-3"><i class="fa-solid fa-address-book text-emerald-500 w-5"></i> Contact</a>
+            
+            <div class="h-px w-full bg-gray-100 my-4"></div>
+            
+            <a href="login.html" class="mobile-nav-link text-white bg-gray-900 hover:bg-emerald-600 font-medium py-3 px-4 rounded-xl transition-all flex items-center justify-center gap-2">
+                <i class="fa-solid fa-lock"></i> Admin Portal
+            </a>
+        </div>
+    </div>
+
+    <!-- 1. HERO SECTION -->
+    <section class="relative pt-32 pb-20 lg:pt-48 lg:pb-32 overflow-hidden bg-mesh-light">
+        <!-- Decorative Background Elements -->
+        <div class="absolute top-0 right-0 -mr-20 -mt-20 w-96 h-96 rounded-full bg-emerald-100 opacity-50 blur-3xl mix-blend-multiply"></div>
+        <div class="absolute bottom-0 left-0 -ml-20 -mb-20 w-80 h-80 rounded-full bg-teal-100 opacity-50 blur-3xl mix-blend-multiply"></div>
+
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+                
+                <!-- Hero Content -->
+                <div class="reveal">
+                    <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/80 backdrop-blur-sm text-emerald-700 font-medium text-sm mb-6 border border-emerald-100 shadow-sm">
+                        <span class="relative flex h-3 w-3">
+                          <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                          <span class="relative inline-flex rounded-full h-3 w-3 bg-emerald-500"></span>
+                        </span>
+                        Complete Homeopathic Care
+                    </div>
+                    
+                    <h1 class="text-4xl md:text-5xl lg:text-6xl font-bold text-gray-900 leading-tight mb-6">
+                        Trusted Homeopathic Care for <span class="text-gradient">You & Your Family</span>
+                    </h1>
+                    
+                    <p class="text-lg text-gray-600 mb-8 max-w-lg leading-relaxed">
+                        We provide professional homeopathic consultation, quality medicines, and personalized treatment plans with years of trusted experience.
+                    </p>
+                    
+                    <div class="flex flex-col sm:flex-row gap-4">
+                        <!-- Button 1: Book Consultation -->
+                        <a href="https://wa.me/923347480766?text=Assalam-o-Alaikum,%20I%20want%20to%20book%20a%20consultation." target="_blank" 
+                           class="inline-flex justify-center items-center gap-2 px-8 py-4 bg-emerald-600 text-white rounded-full font-semibold text-lg hover:bg-emerald-700 transition-all duration-300 shadow-lg shadow-emerald-500/30 hover:shadow-emerald-500/50 hover:-translate-y-1">
+                            <i class="fa-brands fa-whatsapp text-xl"></i> Book Consultation
+                        </a>
+                        
+                        <!-- Button 2: Check Availability -->
+                        <a href="https://wa.me/923347480766?text=Assalam-o-Alaikum,%20Is%20the%20doctor%20available%20today?" target="_blank"
+                           class="inline-flex justify-center items-center gap-2 px-8 py-4 bg-white/50 backdrop-blur-md text-emerald-700 border-2 border-emerald-200 rounded-full font-semibold text-lg hover:border-emerald-500 hover:bg-white transition-all duration-300 hover:-translate-y-1">
+                            <i class="fa-regular fa-calendar-check text-xl"></i> Check Availability
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Hero Modern Graphic (Glassmorphism + Animated Orbs) -->
+                <div class="relative reveal reveal-delay-2 hidden lg:block h-full min-h-[450px]">
+                    <div class="absolute top-10 right-10 w-64 h-64 bg-emerald-300 rounded-full mix-blend-multiply filter blur-2xl opacity-60 animate-blob"></div>
+                    <div class="absolute top-0 right-32 w-72 h-72 bg-teal-200 rounded-full mix-blend-multiply filter blur-2xl opacity-60 animate-blob animation-delay-2000"></div>
+                    <div class="absolute -bottom-8 right-20 w-80 h-80 bg-emerald-100 rounded-full mix-blend-multiply filter blur-2xl opacity-60 animate-blob animation-delay-4000"></div>
+
+                    <!-- Central Glass Card -->
+                    <div class="absolute top-1/2 right-4 transform -translate-y-1/2 w-[85%] bg-white/70 backdrop-blur-xl border border-white p-8 rounded-3xl premium-shadow hover-glow z-10 transition-all duration-500">
+                        <div class="flex justify-between items-center mb-8">
+                            <div class="flex items-center gap-4">
+                                <div class="w-14 h-14 bg-gradient-to-br from-emerald-500 to-emerald-600 rounded-2xl flex items-center justify-center text-white text-2xl shadow-lg shadow-emerald-200">
+                                    <i class="fa-solid fa-leaf"></i>
+                                </div>
+                                <div>
+                                    <h3 class="font-bold text-gray-900 text-xl">Natural Healing</h3>
+                                    <p class="text-sm text-emerald-600 font-medium tracking-wide">100% Safe & Pure</p>
+                                </div>
+                            </div>
+                            <div class="px-4 py-1.5 bg-emerald-50 text-emerald-600 rounded-full text-xs font-bold border border-emerald-100 uppercase tracking-wider">
+                                Active
+                            </div>
+                        </div>
+
+                        <!-- Visual Data Lines -->
+                        <div class="space-y-4 mb-8">
+                            <div class="h-2.5 w-full bg-emerald-50 rounded-full overflow-hidden">
+                                <div class="h-full bg-emerald-500 w-3/4 rounded-full relative"><div class="absolute inset-0 bg-white/20 w-full animate-[pulse_2s_ease-in-out_infinite]"></div></div>
+                            </div>
+                            <div class="h-2.5 w-5/6 bg-emerald-50 rounded-full overflow-hidden">
+                                <div class="h-full bg-emerald-400 w-2/3 rounded-full relative"><div class="absolute inset-0 bg-white/20 w-full animate-[pulse_2.5s_ease-in-out_infinite]"></div></div>
+                            </div>
+                            <div class="h-2.5 w-4/6 bg-emerald-50 rounded-full overflow-hidden">
+                                <div class="h-full bg-emerald-300 w-1/2 rounded-full relative"><div class="absolute inset-0 bg-white/20 w-full animate-[pulse_3s_ease-in-out_infinite]"></div></div>
+                            </div>
+                        </div>
+
+                        <!-- Bottom Stats -->
+                        <div class="grid grid-cols-2 gap-4">
+                            <div class="bg-white p-5 rounded-2xl border border-gray-100 shadow-sm hover:-translate-y-1 transition-transform">
+                                <i class="fa-solid fa-user-doctor text-emerald-500 mb-2 text-2xl"></i>
+                                <h4 class="font-bold text-gray-900 text-2xl">10+</h4>
+                                <p class="text-xs text-gray-500 font-semibold uppercase tracking-wide">Years Exp.</p>
+                            </div>
+                            <div class="bg-white p-5 rounded-2xl border border-gray-100 shadow-sm hover:-translate-y-1 transition-transform">
+                                <i class="fa-solid fa-face-smile text-emerald-500 mb-2 text-2xl"></i>
+                                <h4 class="font-bold text-gray-900 text-2xl">5k+</h4>
+                                <p class="text-xs text-gray-500 font-semibold uppercase tracking-wide">Patients</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Floating Badges -->
+                    <div class="absolute top-1/4 -left-8 bg-white/90 backdrop-blur-sm p-4 rounded-2xl premium-shadow border border-white z-20 animate-[bounce_4s_infinite]">
+                        <div class="flex items-center gap-4">
+                            <div class="w-12 h-12 bg-amber-50 text-amber-500 rounded-full flex items-center justify-center text-xl border border-amber-100">
+                                <i class="fa-solid fa-shield-halved"></i>
+                            </div>
+                            <div>
+                                <p class="text-xs text-gray-500 font-medium">Quality Assured</p>
+                                <p class="text-sm font-bold text-gray-900">100% Original</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="absolute bottom-1/4 -right-6 bg-gray-900/90 backdrop-blur-sm text-white p-4 rounded-2xl premium-shadow border border-gray-700 z-20 animate-[bounce_5s_infinite_1s]">
+                        <div class="flex items-center gap-4">
+                            <div class="flex -space-x-3">
+                                <div class="w-10 h-10 rounded-full bg-gray-700 border-2 border-gray-900 flex items-center justify-center"><i class="fa-solid fa-user text-gray-300 text-xs"></i></div>
+                                <div class="w-10 h-10 rounded-full bg-emerald-500 border-2 border-gray-900 flex items-center justify-center"><i class="fa-solid fa-star text-white text-xs"></i></div>
+                            </div>
+                            <div>
+                                <p class="text-sm font-bold tracking-wide">Top Rated</p>
+                                <p class="text-xs text-gray-400">Clinic in Town</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+            </div>
+        </div>
+    </section>
+
+    <!-- 2. OUR SERVICES -->
+    <section id="services" class="py-24 bg-white relative">
+        <div class="absolute top-0 inset-x-0 h-px bg-gradient-to-r from-transparent via-emerald-200 to-transparent"></div>
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center max-w-3xl mx-auto mb-16 reveal">
+                <div class="inline-flex items-center justify-center px-4 py-1.5 rounded-full bg-emerald-50 text-emerald-600 font-semibold tracking-wide uppercase text-xs mb-4 border border-emerald-100">Our Specialities</div>
+                <h3 class="text-3xl md:text-5xl font-bold text-gray-900 mb-6 tracking-tight">Comprehensive Healthcare Services</h3>
+                <p class="text-gray-500 text-lg">Natural, safe, and effective treatments tailored to your individual health needs.</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                <!-- Service Cards with new styling -->
+                <div class="service-card bg-gray-50 rounded-2xl p-8 border-b-4 border-transparent relative overflow-hidden group reveal">
+                    <div class="absolute top-0 right-0 w-32 h-32 bg-emerald-100 rounded-full filter blur-3xl opacity-0 group-hover:opacity-50 transition-opacity duration-500"></div>
+                    <div class="w-16 h-16 bg-white rounded-2xl flex items-center justify-center text-emerald-600 text-3xl mb-6 shadow-sm group-hover:bg-emerald-600 group-hover:text-white transition-all duration-300 relative z-10">
+                        <i class="fa-solid fa-stethoscope"></i>
+                    </div>
+                    <h4 class="text-xl font-bold text-gray-900 mb-3 relative z-10">Consultation</h4>
+                    <p class="text-gray-600 text-sm leading-relaxed relative z-10">Expert diagnosis and constitutional homeopathic prescribing for overall well-being.</p>
+                </div>
+
+                <div class="service-card bg-gray-50 rounded-2xl p-8 border-b-4 border-transparent relative overflow-hidden group reveal reveal-delay-1">
+                    <div class="absolute top-0 right-0 w-32 h-32 bg-emerald-100 rounded-full filter blur-3xl opacity-0 group-hover:opacity-50 transition-opacity duration-500"></div>
+                    <div class="w-16 h-16 bg-white rounded-2xl flex items-center justify-center text-emerald-600 text-3xl mb-6 shadow-sm group-hover:bg-emerald-600 group-hover:text-white transition-all duration-300 relative z-10">
+                        <i class="fa-solid fa-pills"></i>
+                    </div>
+                    <h4 class="text-xl font-bold text-gray-900 mb-3 relative z-10">Medicine Store</h4>
+                    <p class="text-gray-600 text-sm leading-relaxed relative z-10">100% authentic, high-quality local and imported homeopathic remedies available.</p>
+                </div>
+
+                <div class="service-card bg-gray-50 rounded-2xl p-8 border-b-4 border-transparent relative overflow-hidden group reveal reveal-delay-2">
+                    <div class="absolute top-0 right-0 w-32 h-32 bg-emerald-100 rounded-full filter blur-3xl opacity-0 group-hover:opacity-50 transition-opacity duration-500"></div>
+                    <div class="w-16 h-16 bg-white rounded-2xl flex items-center justify-center text-emerald-600 text-3xl mb-6 shadow-sm group-hover:bg-emerald-600 group-hover:text-white transition-all duration-300 relative z-10">
+                        <i class="fa-solid fa-heart-pulse"></i>
+                    </div>
+                    <h4 class="text-xl font-bold text-gray-900 mb-3 relative z-10">Chronic Disease</h4>
+                    <p class="text-gray-600 text-sm leading-relaxed relative z-10">Long-term relief from chronic conditions like arthritis, asthma, and diabetes naturally.</p>
+                </div>
+
+                <div class="service-card bg-gray-50 rounded-2xl p-8 border-b-4 border-transparent relative overflow-hidden group reveal reveal-delay-3">
+                    <div class="absolute top-0 right-0 w-32 h-32 bg-emerald-100 rounded-full filter blur-3xl opacity-0 group-hover:opacity-50 transition-opacity duration-500"></div>
+                    <div class="w-16 h-16 bg-white rounded-2xl flex items-center justify-center text-emerald-600 text-3xl mb-6 shadow-sm group-hover:bg-emerald-600 group-hover:text-white transition-all duration-300 relative z-10">
+                        <i class="fa-solid fa-baby"></i>
+                    </div>
+                    <h4 class="text-xl font-bold text-gray-900 mb-3 relative z-10">Child Care</h4>
+                    <p class="text-gray-600 text-sm leading-relaxed relative z-10">Safe, gentle, and effective treatments for children's immunity, growth, and illnesses.</p>
+                </div>
+
+                <div class="service-card bg-gray-50 rounded-2xl p-8 border-b-4 border-transparent relative overflow-hidden group reveal">
+                    <div class="absolute top-0 right-0 w-32 h-32 bg-emerald-100 rounded-full filter blur-3xl opacity-0 group-hover:opacity-50 transition-opacity duration-500"></div>
+                    <div class="w-16 h-16 bg-white rounded-2xl flex items-center justify-center text-emerald-600 text-3xl mb-6 shadow-sm group-hover:bg-emerald-600 group-hover:text-white transition-all duration-300 relative z-10">
+                        <i class="fa-solid fa-person-dress"></i>
+                    </div>
+                    <h4 class="text-xl font-bold text-gray-900 mb-3 relative z-10">Women's Health</h4>
+                    <p class="text-gray-600 text-sm leading-relaxed relative z-10">Holistic care for hormonal imbalance, PCOD, and other gynecological issues.</p>
+                </div>
+
+                <div class="service-card bg-gray-50 rounded-2xl p-8 border-b-4 border-transparent relative overflow-hidden group reveal reveal-delay-1">
+                    <div class="absolute top-0 right-0 w-32 h-32 bg-emerald-100 rounded-full filter blur-3xl opacity-0 group-hover:opacity-50 transition-opacity duration-500"></div>
+                    <div class="w-16 h-16 bg-white rounded-2xl flex items-center justify-center text-emerald-600 text-3xl mb-6 shadow-sm group-hover:bg-emerald-600 group-hover:text-white transition-all duration-300 relative z-10">
+                        <i class="fa-solid fa-spa"></i>
+                    </div>
+                    <h4 class="text-xl font-bold text-gray-900 mb-3 relative z-10">Skin & Hair</h4>
+                    <p class="text-gray-600 text-sm leading-relaxed relative z-10">Natural solutions for acne, eczema, psoriasis, hair fall, and scalp conditions.</p>
+                </div>
+
+                <div class="service-card bg-gray-50 rounded-2xl p-8 border-b-4 border-transparent relative overflow-hidden group reveal reveal-delay-2">
+                    <div class="absolute top-0 right-0 w-32 h-32 bg-emerald-100 rounded-full filter blur-3xl opacity-0 group-hover:opacity-50 transition-opacity duration-500"></div>
+                    <div class="w-16 h-16 bg-white rounded-2xl flex items-center justify-center text-emerald-600 text-3xl mb-6 shadow-sm group-hover:bg-emerald-600 group-hover:text-white transition-all duration-300 relative z-10">
+                        <i class="fa-solid fa-stomach"></i>
+                    </div>
+                    <h4 class="text-xl font-bold text-gray-900 mb-3 relative z-10">Digestive Care</h4>
+                    <p class="text-gray-600 text-sm leading-relaxed relative z-10">Effective remedies for acidity, IBS, gastric issues, and improving gut health.</p>
+                </div>
+
+                <div class="service-card bg-gray-50 rounded-2xl p-8 border-b-4 border-transparent relative overflow-hidden group reveal reveal-delay-3">
+                    <div class="absolute top-0 right-0 w-32 h-32 bg-emerald-100 rounded-full filter blur-3xl opacity-0 group-hover:opacity-50 transition-opacity duration-500"></div>
+                    <div class="w-16 h-16 bg-white rounded-2xl flex items-center justify-center text-emerald-600 text-3xl mb-6 shadow-sm group-hover:bg-emerald-600 group-hover:text-white transition-all duration-300 relative z-10">
+                        <i class="fa-solid fa-viruses"></i>
+                    </div>
+                    <h4 class="text-xl font-bold text-gray-900 mb-3 relative z-10">Allergies</h4>
+                    <p class="text-gray-600 text-sm leading-relaxed relative z-10">Build immunity against dust, pollen, and food allergies with permanent relief.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 3. WHY CHOOSE US -->
+    <section class="py-24 bg-gray-50 overflow-hidden relative">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+                
+                <div class="reveal">
+                    <div class="inline-flex items-center justify-center px-4 py-1.5 rounded-full bg-white text-emerald-600 font-semibold tracking-wide uppercase text-xs mb-4 shadow-sm border border-gray-100">Our Excellence</div>
+                    <h3 class="text-3xl md:text-5xl font-bold text-gray-900 mb-6 tracking-tight">Why Choose Islam Homeo Pathic?</h3>
+                    <p class="text-gray-600 mb-10 leading-relaxed text-lg">
+                        We believe in treating the patient, not just the disease. Our approach is entirely natural, side-effect-free, and tailored to your unique physical and emotional health profile.
+                    </p>
+                    
+                    <div class="space-y-6">
+                        <div class="flex items-start gap-5 p-4 rounded-2xl hover:bg-white transition-colors border border-transparent hover:border-gray-100 hover:shadow-sm">
+                            <div class="w-14 h-14 rounded-2xl bg-gradient-to-br from-emerald-100 to-emerald-50 flex items-center justify-center text-emerald-600 text-2xl flex-shrink-0 shadow-inner">
+                                <i class="fa-solid fa-user-md"></i>
+                            </div>
+                            <div>
+                                <h4 class="text-xl font-bold text-gray-900 mb-1">Experienced Doctors</h4>
+                                <p class="text-gray-500 text-sm leading-relaxed">Highly qualified practitioners with years of clinical success in complex cases.</p>
+                            </div>
+                        </div>
+
+                        <div class="flex items-start gap-5 p-4 rounded-2xl hover:bg-white transition-colors border border-transparent hover:border-gray-100 hover:shadow-sm">
+                            <div class="w-14 h-14 rounded-2xl bg-gradient-to-br from-emerald-100 to-emerald-50 flex items-center justify-center text-emerald-600 text-2xl flex-shrink-0 shadow-inner">
+                                <i class="fa-solid fa-shield-halved"></i>
+                            </div>
+                            <div>
+                                <h4 class="text-xl font-bold text-gray-900 mb-1">100% Original Medicines</h4>
+                                <p class="text-gray-500 text-sm leading-relaxed">We strictly dispense sealed, branded, and globally recognized imported remedies.</p>
+                            </div>
+                        </div>
+
+                        <div class="flex items-start gap-5 p-4 rounded-2xl hover:bg-white transition-colors border border-transparent hover:border-gray-100 hover:shadow-sm">
+                            <div class="w-14 h-14 rounded-2xl bg-gradient-to-br from-emerald-100 to-emerald-50 flex items-center justify-center text-emerald-600 text-2xl flex-shrink-0 shadow-inner">
+                                <i class="fa-solid fa-hand-holding-dollar"></i>
+                            </div>
+                            <div>
+                                <h4 class="text-xl font-bold text-gray-900 mb-1">Affordable Consultation</h4>
+                                <p class="text-gray-500 text-sm leading-relaxed">Premium healthcare that is accessible, transparent, and affordable for everyone.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Right Side - Modern Image Composition -->
+                <div class="relative reveal reveal-delay-2 hidden lg:block h-[600px]">
+                    <!-- Background accent -->
+                    <div class="absolute top-10 -right-10 w-72 h-72 bg-emerald-200 rounded-full mix-blend-multiply filter blur-3xl opacity-50"></div>
+                    
+                    <!-- Main Image -->
+                    <div class="absolute top-0 right-10 w-[80%] h-[75%] rounded-3xl overflow-hidden shadow-2xl border-4 border-white z-10">
+                        <img src="https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?auto=format&fit=crop&q=80&w=800" alt="Homeopathic Medicines" class="w-full h-full object-cover transform hover:scale-105 transition-transform duration-700">
+                        <div class="absolute inset-0 bg-emerald-900/10 hover:bg-transparent transition-colors duration-500"></div>
+                    </div>
+
+                    <!-- Secondary Overlapping Image -->
+                    <div class="absolute bottom-10 left-0 w-[60%] h-[50%] rounded-3xl overflow-hidden premium-shadow border-4 border-white z-20">
+                        <img src="https://images.unsplash.com/photo-1631549916768-4119b2e5f926?auto=format&fit=crop&q=80&w=600" alt="Clinic Interior" class="w-full h-full object-cover transform hover:scale-105 transition-transform duration-700">
+                    </div>
+
+                    <!-- Floating Trust Badge -->
+                    <div class="absolute top-1/2 -left-8 transform -translate-y-1/2 bg-white px-6 py-4 rounded-2xl shadow-xl border border-gray-100 z-30 flex items-center gap-4 animate-[bounce_4s_infinite]">
+                        <div class="w-12 h-12 bg-emerald-600 rounded-full flex items-center justify-center text-white text-xl">
+                            <i class="fa-solid fa-leaf"></i>
+                        </div>
+                        <div>
+                            <p class="text-2xl font-bold text-gray-900 leading-none">100%</p>
+                            <p class="text-sm text-gray-500 font-medium">Natural Cure</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ==============================================
+         3.5 NAYA SECTION: MEET THE DOCTORS (2 Doctors)
+         ============================================== -->
+    <section class="py-24 bg-white relative">
+        <div class="absolute inset-0 opacity-[0.02]" style="background-image: url('data:image/svg+xml,%3Csvg width=\'60\' height=\'60\' viewBox=\'0 0 60 60\' xmlns=\'http://www.w3.org/2000/svg\'%3E%3Cg fill=\'none\' fill-rule=\'evenodd\'%3E%3Cg fill=\'%23059669\' fill-opacity=\'1\'%3E%3Cpath d=\'M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z\'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E');"></div>
+        
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+            <div class="text-center max-w-3xl mx-auto mb-16 reveal">
+                <div class="inline-flex items-center justify-center px-4 py-1.5 rounded-full bg-emerald-50 text-emerald-600 font-semibold tracking-wide uppercase text-xs mb-4 border border-emerald-100">Our Specialists</div>
+                <h3 class="text-3xl md:text-5xl font-bold text-gray-900 mb-6 tracking-tight">Meet Our Medical Experts</h3>
+                <p class="text-gray-500 text-lg">Compassionate care backed by years of clinical excellence.</p>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-10">
+                
+                <!-- DOCTOR 1: Dr. Muhammad Asghar -->
+                <div class="bg-gray-50 rounded-[2rem] p-6 sm:p-8 border border-gray-100 hover:border-emerald-200 premium-shadow reveal group hover:-translate-y-2 transition-all duration-500 overflow-hidden relative">
+                    <div class="absolute top-0 right-0 w-48 h-48 bg-emerald-100 rounded-bl-[100px] -z-0 opacity-50 group-hover:scale-110 transition-transform duration-500"></div>
+                    
+                    <div class="flex flex-col sm:flex-row gap-8 items-center sm:items-start relative z-10">
+                        <!-- Pic -->
+                        <div class="w-40 h-40 sm:w-48 sm:h-48 flex-shrink-0 relative rounded-3xl overflow-hidden border-4 border-white shadow-lg group-hover:shadow-emerald-200 transition-all duration-500">
+                            <!-- YAHAN DR ASGHAR KI PIC KA PATH DEN -->
+                            <img src="assests/images/dr-asghar.jpg.jpg" alt="Dr. Muhammad Asghar" class="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-700" onerror="this.src='https://placehold.co/400x400/ecfdf5/059669?text=Dr.+Asghar'">
+                        </div>
+                        <!-- Details -->
+                        <div class="text-center sm:text-left flex-1">
+                            <div class="inline-block px-3 py-1 bg-emerald-100 text-emerald-700 rounded-md text-xs font-bold tracking-wide uppercase mb-3">Senior Physician</div>
+                            <h3 class="text-2xl font-bold text-gray-900 mb-2">Dr. M. Asghar</h3>
+                            
+                            <p class="text-gray-500 text-sm mb-5 leading-relaxed">
+                                A dedicated professional with extensive experience in treating chronic conditions and providing natural family healthcare.
+                            </p>
+                            
+                            <div class="space-y-3 mb-6 bg-white p-4 rounded-2xl border border-gray-100">
+                                <div class="flex items-center justify-center sm:justify-start gap-3 text-sm text-gray-700 font-medium">
+                                    <div class="w-8 h-8 rounded-full bg-emerald-50 flex items-center justify-center text-emerald-500"><i class="fa-solid fa-graduation-cap"></i></div>
+                                    <span>DHMS, RHMP</span>
+                                </div>
+                                <div class="flex items-center justify-center sm:justify-start gap-3 text-sm text-gray-700 font-medium">
+                                    <div class="w-8 h-8 rounded-full bg-emerald-50 flex items-center justify-center text-emerald-500"><i class="fa-solid fa-award"></i></div>
+                                    <span>20+ Years Experience</span>
+                                </div>
+                            </div>
+                            
+                            <a href="https://wa.me/923347480766" target="_blank" class="text-emerald-600 font-semibold hover:text-emerald-800 transition-colors inline-flex items-center gap-2">
+                                Book Appointment <i class="fa-solid fa-arrow-right text-sm"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- DOCTOR 2: Dr. Jhangir Hussain -->
+                <div class="bg-gray-50 rounded-[2rem] p-6 sm:p-8 border border-gray-100 hover:border-emerald-200 premium-shadow reveal reveal-delay-1 group hover:-translate-y-2 transition-all duration-500 overflow-hidden relative">
+                    <div class="absolute top-0 right-0 w-48 h-48 bg-emerald-100 rounded-bl-[100px] -z-0 opacity-50 group-hover:scale-110 transition-transform duration-500"></div>
+                    
+                    <div class="flex flex-col sm:flex-row gap-8 items-center sm:items-start relative z-10">
+                        <!-- Pic -->
+                        <div class="w-40 h-40 sm:w-48 sm:h-48 flex-shrink-0 relative rounded-3xl overflow-hidden border-4 border-white shadow-lg group-hover:shadow-emerald-200 transition-all duration-500">
+                            <!-- YAHAN DR JHANGIR KI PIC KA PATH DEN -->
+                            <img src="assests/images/dr-jhangir.jpg.jpg" alt="Dr. Jhangir Hussain" class="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-700" onerror="this.src='https://placehold.co/400x400/ecfdf5/059669?text=Dr.+Jhangir'">
+                        </div>
+                        <!-- Details -->
+                        <div class="text-center sm:text-left flex-1">
+                            <div class="inline-block px-3 py-1 bg-emerald-100 text-emerald-700 rounded-md text-xs font-bold tracking-wide uppercase mb-3">Expert Consultant</div>
+                            <h3 class="text-2xl font-bold text-gray-900 mb-2">Dr. Jhangir Hussain</h3>
+                            
+                            <p class="text-gray-500 text-sm mb-5 leading-relaxed">
+                                Specializes in holistic care, accurate diagnosis, and personalized treatments for acute and long-term diseases.
+                            </p>
+                            
+                            <div class="space-y-3 mb-6 bg-white p-4 rounded-2xl border border-gray-100">
+                                <div class="flex items-center justify-center sm:justify-start gap-3 text-sm text-gray-700 font-medium">
+                                    <div class="w-8 h-8 rounded-full bg-emerald-50 flex items-center justify-center text-emerald-500"><i class="fa-solid fa-graduation-cap"></i></div>
+                                    <span>DHMS, RHMP</span>
+                                </div>
+                                <div class="flex items-center justify-center sm:justify-start gap-3 text-sm text-gray-700 font-medium">
+                                    <div class="w-8 h-8 rounded-full bg-emerald-50 flex items-center justify-center text-emerald-500"><i class="fa-solid fa-briefcase-medical"></i></div>
+                                    <span>Specialist Care</span>
+                                </div>
+                            </div>
+                            
+                            <a href="https://wa.me/923347480766" target="_blank" class="text-emerald-600 font-semibold hover:text-emerald-800 transition-colors inline-flex items-center gap-2">
+                                Book Appointment <i class="fa-solid fa-arrow-right text-sm"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+    <!-- END MEET THE DOCTORS SECTION -->
+
+    <!-- 4. ABOUT CLINIC & STATS -->
+    <section id="about" class="py-24 bg-gray-900 relative overflow-hidden">
+        <!-- Modern Deep Background Elements -->
+        <div class="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,_var(--tw-gradient-stops))] from-emerald-900 via-gray-900 to-black opacity-90"></div>
+        <div class="absolute -top-40 -right-40 w-96 h-96 bg-emerald-600 rounded-full mix-blend-screen filter blur-[100px] opacity-30"></div>
+        <div class="absolute -bottom-40 -left-40 w-96 h-96 bg-teal-600 rounded-full mix-blend-screen filter blur-[100px] opacity-20"></div>
+        
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+                
+                <div class="reveal text-white">
+                    <div class="inline-flex items-center justify-center px-4 py-1.5 rounded-full bg-emerald-900/50 border border-emerald-500/30 text-emerald-400 font-semibold tracking-wide uppercase text-xs mb-6">About Our Legacy</div>
+                    <h3 class="text-3xl md:text-5xl font-bold mb-6 tracking-tight text-white">A Legacy of Healing & Trust</h3>
+                    <div class="w-20 h-1.5 bg-gradient-to-r from-emerald-500 to-teal-400 rounded-full mb-8"></div>
+                    
+                    <p class="text-gray-300 text-lg mb-6 leading-relaxed">
+                        Islam Homeo Pathic Clinic & Store was established with a single vision: to provide authentic, effective, and natural healthcare solutions to the community. 
+                    </p>
+                    <p class="text-gray-300 text-lg leading-relaxed mb-8">
+                        Combining modern diagnosis techniques with classical homeopathic principles, we ensure that every patient receives a personalized treatment plan targeting the root cause.
+                    </p>
+                    
+                    <a href="#contact" class="inline-flex items-center gap-2 text-white font-medium hover:text-emerald-400 transition-colors">
+                        Visit our clinic today <i class="fa-solid fa-arrow-right"></i>
+                    </a>
+                </div>
+
+                <!-- Modern Stats Grid (Glassmorphism dark) -->
+                <div class="grid grid-cols-2 gap-4 sm:gap-6 reveal reveal-delay-2">
+                    <div class="glass-dark rounded-3xl p-6 sm:p-8 text-center hover:-translate-y-1 transition-transform duration-300 group">
+                        <div class="text-4xl sm:text-5xl font-bold text-white mb-2 group-hover:scale-110 transition-transform">5k+</div>
+                        <div class="text-emerald-400 font-medium text-sm sm:text-base uppercase tracking-wider">Happy Patients</div>
+                    </div>
+                    <div class="glass-dark rounded-3xl p-6 sm:p-8 text-center hover:-translate-y-1 transition-transform duration-300 group">
+                        <div class="text-4xl sm:text-5xl font-bold text-white mb-2 group-hover:scale-110 transition-transform">10+</div>
+                        <div class="text-emerald-400 font-medium text-sm sm:text-base uppercase tracking-wider">Years Exp.</div>
+                    </div>
+                    <div class="glass-dark rounded-3xl p-6 sm:p-8 text-center hover:-translate-y-1 transition-transform duration-300 group">
+                        <div class="text-4xl sm:text-5xl font-bold text-white mb-2 group-hover:scale-110 transition-transform">100%</div>
+                        <div class="text-emerald-400 font-medium text-sm sm:text-base uppercase tracking-wider">Genuine Meds</div>
+                    </div>
+                    <div class="glass-dark rounded-3xl p-6 sm:p-8 text-center hover:-translate-y-1 transition-transform duration-300 group">
+                        <div class="text-4xl sm:text-5xl font-bold text-white mb-2 group-hover:scale-110 transition-transform"><i class="fa-solid fa-award"></i></div>
+                        <div class="text-emerald-400 font-medium text-sm sm:text-base uppercase tracking-wider">Certified</div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- 5. CONSULTATION PROCESS -->
+    <section id="process" class="py-24 bg-white relative">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center max-w-3xl mx-auto mb-20 reveal">
+                <div class="inline-flex items-center justify-center px-4 py-1.5 rounded-full bg-emerald-50 text-emerald-600 font-semibold tracking-wide uppercase text-xs mb-4 border border-emerald-100">Simple Steps</div>
+                <h3 class="text-3xl md:text-5xl font-bold text-gray-900 mb-6 tracking-tight">How Our Consultation Works</h3>
+                <p class="text-gray-500 text-lg">A seamless, hassle-free process designed for your comfort and quick recovery.</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-12 md:gap-8 relative">
+                <!-- Animated Connecting Line (Desktop only) -->
+                <div class="hidden md:block absolute top-12 left-[12%] right-[12%] h-1 bg-gray-100 rounded-full z-0 overflow-hidden">
+                    <div class="w-full h-full process-line"></div>
+                </div>
+
+                <!-- Step 1 -->
+                <div class="relative z-10 text-center reveal group">
+                    <div class="w-24 h-24 mx-auto bg-white rounded-2xl flex items-center justify-center border-2 border-emerald-100 group-hover:border-emerald-500 premium-shadow mb-6 text-emerald-600 text-3xl transition-all duration-300 group-hover:-translate-y-2 group-hover:bg-emerald-50">
+                        <i class="fa-brands fa-whatsapp"></i>
+                        <div class="absolute -top-3 -right-3 w-8 h-8 bg-gray-900 text-white rounded-full flex items-center justify-center text-sm font-bold border-4 border-white shadow-sm">1</div>
+                    </div>
+                    <h4 class="text-xl font-bold text-gray-900 mb-2">Book on WhatsApp</h4>
+                    <p class="text-gray-500 text-sm leading-relaxed">Send us a quick message to schedule your appointment.</p>
+                </div>
+
+                <!-- Step 2 -->
+                <div class="relative z-10 text-center reveal reveal-delay-1 group">
+                    <div class="w-24 h-24 mx-auto bg-white rounded-2xl flex items-center justify-center border-2 border-emerald-100 group-hover:border-emerald-500 premium-shadow mb-6 text-emerald-600 text-3xl transition-all duration-300 group-hover:-translate-y-2 group-hover:bg-emerald-50">
+                        <i class="fa-solid fa-location-dot"></i>
+                        <div class="absolute -top-3 -right-3 w-8 h-8 bg-gray-900 text-white rounded-full flex items-center justify-center text-sm font-bold border-4 border-white shadow-sm">2</div>
+                    </div>
+                    <h4 class="text-xl font-bold text-gray-900 mb-2">Visit Clinic</h4>
+                    <p class="text-gray-500 text-sm leading-relaxed">Arrive at our clinic at your scheduled, comfortable time.</p>
+                </div>
+
+                <!-- Step 3 -->
+                <div class="relative z-10 text-center reveal reveal-delay-2 group">
+                    <div class="w-24 h-24 mx-auto bg-white rounded-2xl flex items-center justify-center border-2 border-emerald-100 group-hover:border-emerald-500 premium-shadow mb-6 text-emerald-600 text-3xl transition-all duration-300 group-hover:-translate-y-2 group-hover:bg-emerald-50">
+                        <i class="fa-solid fa-user-doctor"></i>
+                        <div class="absolute -top-3 -right-3 w-8 h-8 bg-gray-900 text-white rounded-full flex items-center justify-center text-sm font-bold border-4 border-white shadow-sm">3</div>
+                    </div>
+                    <h4 class="text-xl font-bold text-gray-900 mb-2">Consultation</h4>
+                    <p class="text-gray-500 text-sm leading-relaxed">Detailed case taking and diagnosis by our expert doctors.</p>
+                </div>
+
+                <!-- Step 4 -->
+                <div class="relative z-10 text-center reveal reveal-delay-3 group">
+                    <div class="w-24 h-24 mx-auto bg-white rounded-2xl flex items-center justify-center border-2 border-emerald-100 group-hover:border-emerald-500 premium-shadow mb-6 text-emerald-600 text-3xl transition-all duration-300 group-hover:-translate-y-2 group-hover:bg-emerald-50">
+                        <i class="fa-solid fa-prescription-bottle-medical"></i>
+                        <div class="absolute -top-3 -right-3 w-8 h-8 bg-emerald-600 text-white rounded-full flex items-center justify-center text-sm font-bold border-4 border-white shadow-sm">4</div>
+                    </div>
+                    <h4 class="text-xl font-bold text-gray-900 mb-2">Get Medicines</h4>
+                    <p class="text-gray-500 text-sm leading-relaxed">Receive your prescribed, high-quality medicines instantly.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 6 & 7. TIMINGS AND CONTACT -->
+    <section id="contact" class="py-24 bg-gray-50 border-t border-gray-100">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+                
+                <!-- Contact Information -->
+                <div class="lg:col-span-7 reveal">
+                    <div class="inline-flex items-center justify-center px-4 py-1.5 rounded-full bg-white text-emerald-600 font-semibold tracking-wide uppercase text-xs mb-4 shadow-sm border border-gray-100">Contact Us</div>
+                    <h2 class="text-3xl md:text-5xl font-bold text-gray-900 mb-8 tracking-tight">We're Here to Help You Heal</h2>
+                    
+                    <div class="space-y-6 mb-10">
+                        <div class="flex items-center gap-5 p-5 bg-white rounded-2xl shadow-sm border border-gray-100 hover:border-emerald-200 transition-colors">
+                            <div class="w-14 h-14 rounded-full bg-emerald-50 flex items-center justify-center text-emerald-600 text-xl flex-shrink-0">
+                                <i class="fa-solid fa-map-location-dot"></i>
+                            </div>
+                            <div>
+                                <h4 class="text-sm font-bold text-gray-400 uppercase tracking-wider mb-1">Clinic Address</h4>
+                                <p class="text-gray-900 font-medium text-lg">Railway Road, Dina, Pakistan</p>
+                            </div>
+                        </div>
+
+                        <div class="flex items-center gap-5 p-5 bg-white rounded-2xl shadow-sm border border-gray-100 hover:border-emerald-200 transition-colors">
+                            <div class="w-14 h-14 rounded-full bg-emerald-50 flex items-center justify-center text-emerald-600 text-xl flex-shrink-0">
+                                <i class="fa-solid fa-phone-volume"></i>
+                            </div>
+                            <div>
+                                <h4 class="text-sm font-bold text-gray-400 uppercase tracking-wider mb-1">Call Us Direct</h4>
+                                <p class="text-gray-900 font-bold text-xl">+92 334 7480766</p>
+                            </div>
+                        </div>
+
+                        <div class="flex items-center gap-5 p-5 bg-white rounded-2xl shadow-sm border border-gray-100 hover:border-[#25d366] transition-colors cursor-pointer" onclick="window.open('https://wa.me/923347480766', '_blank')">
+                            <div class="w-14 h-14 rounded-full bg-[#25d366]/10 flex items-center justify-center text-[#25d366] text-2xl flex-shrink-0">
+                                <i class="fa-brands fa-whatsapp"></i>
+                            </div>
+                            <div>
+                                <h4 class="text-sm font-bold text-gray-400 uppercase tracking-wider mb-1">WhatsApp Chat</h4>
+                                <p class="text-gray-900 font-bold text-xl">+92 334 7480766</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Google Maps Button -->
+                    <a href="https://maps.google.com/?q=Railway+Road+Dina" target="_blank" class="inline-flex justify-center items-center gap-2 px-8 py-4 bg-gray-900 text-white rounded-full font-semibold hover:bg-emerald-600 transition-all duration-300 shadow-xl hover:-translate-y-1">
+                        <i class="fa-solid fa-location-arrow"></i> Get Directions on Map
+                    </a>
+                </div>
+
+                <!-- Clinic Timings Card (Modern) -->
+                <div class="lg:col-span-5 reveal reveal-delay-2 h-full">
+                    <div class="bg-gradient-to-b from-emerald-600 to-emerald-800 rounded-[2.5rem] p-10 text-white shadow-2xl relative overflow-hidden h-full flex flex-col justify-between border border-emerald-500/50">
+                        <!-- Decorative background -->
+                        <div class="absolute -top-24 -right-24 w-64 h-64 bg-white opacity-5 rounded-full blur-3xl"></div>
+                        <i class="fa-regular fa-clock absolute -bottom-10 -right-10 text-[10rem] text-white opacity-[0.03] transform -rotate-12"></i>
+                        
+                        <div class="relative z-10">
+                            <div class="w-16 h-16 bg-white/10 backdrop-blur-md rounded-2xl flex items-center justify-center text-white text-2xl mb-8 border border-white/20">
+                                <i class="fa-regular fa-calendar-check"></i>
+                            </div>
+                            
+                            <h3 class="text-3xl font-bold mb-8">Opening Hours</h3>
+                            
+                            <div class="space-y-5">
+                                <div class="flex justify-between items-center border-b border-white/10 pb-5">
+                                    <span class="text-lg font-medium text-emerald-50">Saturday - Thursday</span>
+                                    <span class="text-base font-bold bg-white text-emerald-800 px-4 py-1.5 rounded-full shadow-sm">9 AM - 6 PM</span>
+                                </div>
+                                <div class="flex justify-between items-center pt-2">
+                                    <span class="text-lg font-medium text-emerald-200">Friday</span>
+                                    <span class="text-base font-bold text-emerald-800 bg-emerald-200 px-4 py-1.5 rounded-full">Closed</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="relative z-10 mt-12">
+                            <div class="p-5 rounded-2xl bg-black/20 backdrop-blur-sm border border-white/10 flex gap-4 items-start">
+                                <i class="fa-solid fa-circle-info text-emerald-300 mt-1"></i>
+                                <p class="text-sm font-medium text-emerald-50 leading-relaxed">
+                                    For emergencies outside of regular hours, please drop a message on our WhatsApp. We respond ASAP.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- Floating WhatsApp Icon -->
+    <a href="https://wa.me/923347480766?text=Assalam-o-Alaikum,%20I%20want%20to%20book%20a%20consultation." target="_blank" 
+       class="fixed bottom-6 right-6 w-16 h-16 bg-[#25d366] text-white rounded-full flex items-center justify-center text-3xl shadow-[0_10px_30px_rgba(37,211,102,0.4)] z-50 hover:scale-110 transition-transform duration-300 border-2 border-white">
+        <span class="absolute inset-0 rounded-full border-4 border-[#25d366] animate-ping opacity-40"></span>
+        <i class="fa-brands fa-whatsapp relative z-10"></i>
+    </a>
+
+    <!-- 8. FOOTER -->
+    <footer class="bg-gray-950 text-gray-300 pt-20 pb-10 border-t-4 border-emerald-600">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-16">
+                
+                <!-- Brand Info -->
+                <div class="lg:col-span-1">
+                    <div class="flex items-center gap-3 mb-6">
+                        <div class="w-12 h-12 bg-emerald-600 rounded-xl flex items-center justify-center text-white text-xl shadow-lg">
+                            <i class="fa-solid fa-leaf"></i>
+                        </div>
+                        <div>
+                            <h2 class="font-bold text-xl text-white leading-tight">Islam Homeo</h2>
+                            <p class="text-xs text-emerald-500 font-bold tracking-wider uppercase">Clinic & Store</p>
+                        </div>
+                    </div>
+                    <p class="text-gray-400 text-sm leading-relaxed mb-6">
+                        Providing trusted, natural, and side-effect-free treatments for your entire family's well-being since a decade.
+                    </p>
+                    <div class="flex gap-4">
+                        <a href="#" class="w-10 h-10 rounded-full bg-gray-800 flex items-center justify-center hover:bg-emerald-600 hover:text-white transition-colors"><i class="fa-brands fa-facebook-f"></i></a>
+                        <a href="#" class="w-10 h-10 rounded-full bg-gray-800 flex items-center justify-center hover:bg-emerald-600 hover:text-white transition-colors"><i class="fa-brands fa-instagram"></i></a>
+                        <a href="#" class="w-10 h-10 rounded-full bg-gray-800 flex items-center justify-center hover:bg-emerald-600 hover:text-white transition-colors"><i class="fa-brands fa-twitter"></i></a>
+                    </div>
+                </div>
+
+                <!-- Quick Links -->
+                <div>
+                    <h3 class="text-lg font-bold text-white mb-6">Quick Links</h3>
+                    <ul class="space-y-4">
+                        <li><a href="#services" class="text-gray-400 hover:text-emerald-400 transition-colors text-sm flex items-center gap-2"><div class="w-1.5 h-1.5 rounded-full bg-emerald-500"></div> Our Services</a></li>
+                        <li><a href="#about" class="text-gray-400 hover:text-emerald-400 transition-colors text-sm flex items-center gap-2"><div class="w-1.5 h-1.5 rounded-full bg-emerald-500"></div> About Clinic</a></li>
+                        <li><a href="#process" class="text-gray-400 hover:text-emerald-400 transition-colors text-sm flex items-center gap-2"><div class="w-1.5 h-1.5 rounded-full bg-emerald-500"></div> How it Works</a></li>
+                        <li><a href="#contact" class="text-gray-400 hover:text-emerald-400 transition-colors text-sm flex items-center gap-2"><div class="w-1.5 h-1.5 rounded-full bg-emerald-500"></div> Contact Us</a></li>
+                    </ul>
+                </div>
+
+                <!-- Services Links -->
+                <div>
+                    <h3 class="text-lg font-bold text-white mb-6">Top Treatments</h3>
+                    <ul class="space-y-4">
+                        <li><a href="#" class="text-gray-400 hover:text-emerald-400 transition-colors text-sm flex items-center gap-2"><div class="w-1.5 h-1.5 rounded-full bg-gray-600"></div> Chronic Diseases</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-emerald-400 transition-colors text-sm flex items-center gap-2"><div class="w-1.5 h-1.5 rounded-full bg-gray-600"></div> Skin & Hair Care</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-emerald-400 transition-colors text-sm flex items-center gap-2"><div class="w-1.5 h-1.5 rounded-full bg-gray-600"></div> Digestive Issues</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-emerald-400 transition-colors text-sm flex items-center gap-2"><div class="w-1.5 h-1.5 rounded-full bg-gray-600"></div> Child Healthcare</a></li>
+                    </ul>
+                </div>
+
+                <!-- Contact Info -->
+                <div>
+                    <h3 class="text-lg font-bold text-white mb-6">Contact Info</h3>
+                    <ul class="space-y-5">
+                        <li class="flex items-start gap-4 text-sm text-gray-400">
+                            <div class="w-8 h-8 rounded-full bg-gray-800 flex items-center justify-center text-emerald-500 flex-shrink-0"><i class="fa-solid fa-location-dot"></i></div>
+                            <span class="pt-1">Railway Road, Dina, Jhelum, Punjab, Pakistan</span>
+                        </li>
+                        <li class="flex items-center gap-4 text-sm text-gray-400">
+                            <div class="w-8 h-8 rounded-full bg-gray-800 flex items-center justify-center text-emerald-500 flex-shrink-0"><i class="fa-solid fa-phone"></i></div>
+                            <span>+92 334 7480766</span>
+                        </li>
+                        <li class="flex items-center gap-4 text-sm text-gray-400">
+                            <div class="w-8 h-8 rounded-full bg-gray-800 flex items-center justify-center text-[#25d366] flex-shrink-0"><i class="fa-brands fa-whatsapp text-lg"></i></div>
+                            <span>+92 334 7480766</span>
+                        </li>
+                    </ul>
+                </div>
+
+            </div>
+            
+            <!-- Copyright -->
+            <div class="border-t border-gray-800 pt-8 flex flex-col md:flex-row justify-between items-center gap-4">
+                <p class="text-gray-500 text-sm text-center md:text-left font-medium">
+                    &copy; 2026 Islam Homeo Pathic Clinic & Store. All Rights Reserved.
+                </p>
+                <div class="flex gap-4">
+                    <a href="login.html" class="flex items-center gap-2 text-gray-500 hover:text-emerald-400 transition-colors text-sm font-medium bg-gray-900 px-4 py-2 rounded-lg border border-gray-800">
+                        <i class="fa-solid fa-shield-halved"></i> Admin Portal
+                    </a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Javascript for Interactivity & Scroll Animations -->
+    <script>
+        // 1. Scroll Reveal Animation Logic
+        function reveal() {
+            var reveals = document.querySelectorAll(".reveal");
+            for (var i = 0; i < reveals.length; i++) {
+                var windowHeight = window.innerHeight;
+                var elementTop = reveals[i].getBoundingClientRect().top;
+                var elementVisible = 50; // threshold
+
+                if (elementTop < windowHeight - elementVisible) {
+                    reveals[i].classList.add("active");
+                }
+            }
+        }
+        
+        // Listen to scroll events
+        window.addEventListener("scroll", reveal);
+        // Trigger once on load
+        reveal();
+
+        // 2. Navbar Styling on Scroll (Add shadow/background when scrolling down)
+        window.addEventListener("scroll", function() {
+            var navbar = document.getElementById("navbar");
+            if (window.scrollY > 20) {
+                navbar.classList.add("shadow-sm", "border-b", "border-gray-100");
+                navbar.classList.replace("glass", "bg-white/95");
+            } else {
+                navbar.classList.remove("shadow-sm", "border-b", "border-gray-100");
+                navbar.classList.replace("bg-white/95", "glass");
+            }
+        });
+
+        // 3. Mobile Menu Open/Close Logic
+        const mobileMenu = document.getElementById("mobileMenu");
+        const mobileMenuOverlay = document.getElementById("mobileMenuOverlay");
+        const openMobileMenuBtn = document.getElementById("openMobileMenuBtn");
+        const closeMobileMenuBtn = document.getElementById("closeMobileMenuBtn");
+        const mobileNavLinks = document.querySelectorAll(".mobile-nav-link");
+
+        function openMobileMenu() {
+            mobileMenu.classList.add("open");
+            mobileMenuOverlay.classList.add("open");
+            document.body.style.overflow = "hidden"; // background scroll lock
+        }
+
+        function closeMobileMenu() {
+            mobileMenu.classList.remove("open");
+            mobileMenuOverlay.classList.remove("open");
+            document.body.style.overflow = ""; // scroll wapas normal
+        }
+
+        if (openMobileMenuBtn) openMobileMenuBtn.addEventListener("click", openMobileMenu);
+        if (closeMobileMenuBtn) closeMobileMenuBtn.addEventListener("click", closeMobileMenu);
+        if (mobileMenuOverlay) mobileMenuOverlay.addEventListener("click", closeMobileMenu);
+
+        // Close menu on link click
+        mobileNavLinks.forEach(link => {
+            link.addEventListener("click", closeMobileMenu);
+        });
+
+        // Escape key close
+        document.addEventListener("keydown", function(e) {
+            if (e.key === "Escape") closeMobileMenu();
+        });
+    </script>
+</body>
+</html>

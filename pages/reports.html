@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reports - Islamia POS</title>
+    <link rel="stylesheet" href="../css/style.css">
+    <style>
+        .cards-container { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 20px; margin-top: 20px; }
+        .card { background: white; padding: 25px; border-radius: 8px; box-shadow: 0 4px 8px rgba(0,0,0,0.1); text-align: center; }
+        .card.purchase { border-top: 5px solid #e74c3c; } /* Red */
+        .card.med-sale { border-top: 5px solid #3498db; } /* Blue */
+        .card.doc-fee { border-top: 5px solid #f39c12; } /* Orange */
+        .card.net-sale { border-top: 5px solid #27ae60; } /* Green */
+        .card h3 { color: #7f8c8d; font-size: 16px; margin-bottom: 10px; }
+        .card p { font-size: 28px; font-weight: bold; color: #2c3e50; }
+        .card small { color: #e74c3c; font-size: 14px; display: block; margin-top: 5px; }
+
+        /* ===== Monthly History Section ===== */
+        .section-box { background: white; padding: 20px; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); margin-top: 30px; }
+        .month-controls { display: flex; flex-wrap: wrap; gap: 10px; align-items: end; margin-bottom: 20px; }
+        .month-controls .form-group { display: flex; flex-direction: column; }
+        .month-controls label { font-size: 13px; color: #555; margin-bottom: 5px; }
+        .month-controls input[type="month"] { padding: 8px; border: 1px solid #ccc; border-radius: 4px; }
+        .btn-load { background: #3498db; color: white; border: none; padding: 10px 20px; border-radius: 5px; cursor: pointer; font-weight: bold; }
+        .btn-load:hover { background: #2980b9; }
+        .btn-delete-month { background: #e74c3c; color: white; border: none; padding: 10px 20px; border-radius: 5px; cursor: pointer; font-weight: bold; }
+        .btn-delete-month:hover { background: #c0392b; }
+        .btn-delete-month:disabled, .btn-load:disabled { background: #bdc3c7; cursor: not-allowed; }
+
+        .month-summary-cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 15px; margin-bottom: 20px; }
+        .month-summary-cards .mini-card { background: #f8f9fa; padding: 15px; border-radius: 6px; text-align: center; border: 1px solid #eee; }
+        .month-summary-cards .mini-card h4 { color: #7f8c8d; font-size: 13px; margin-bottom: 8px; }
+        .month-summary-cards .mini-card p { font-size: 20px; font-weight: bold; color: #2c3e50; margin: 0; }
+
+        .table-container { overflow-x: auto; }
+        table { width: 100%; border-collapse: collapse; }
+        th, td { padding: 10px; text-align: left; border-bottom: 1px solid #ddd; font-size: 14px; }
+        th { background-color: #e8f8f5; color: #117864; }
+
+        #monthStatusMsg { font-size: 14px; color: #555; margin-bottom: 10px; }
+
+        /* ===== Expense Report Section ===== */
+        .expense-summary-cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; margin-bottom: 25px; }
+        .expense-summary-cards .mini-card { background: #fdecea; padding: 15px; border-radius: 6px; text-align: center; border: 1px solid #f5c6cb; }
+        .expense-summary-cards .mini-card h4 { color: #c0392b; font-size: 13px; margin-bottom: 8px; }
+        .expense-summary-cards .mini-card p { font-size: 20px; font-weight: bold; color: #2c3e50; margin: 0; }
+
+        .category-chart { margin-top: 10px; }
+        .category-bar-row { display: flex; align-items: center; gap: 12px; margin-bottom: 12px; }
+        .category-bar-label { min-width: 140px; font-size: 13px; color: #333; text-align: right; flex-shrink: 0; }
+        .category-bar-track { flex-grow: 1; background: #f0f0f0; border-radius: 4px; height: 22px; position: relative; overflow: hidden; }
+        .category-bar-fill { height: 100%; background: linear-gradient(90deg, #e74c3c, #f39c12); border-radius: 4px; transition: width 0.4s ease; display: flex; align-items: center; justify-content: flex-end; padding-right: 8px; box-sizing: border-box; }
+        .category-bar-fill span { color: white; font-size: 11px; font-weight: bold; white-space: nowrap; }
+        .category-bar-amount { min-width: 100px; font-size: 13px; font-weight: bold; color: #2c3e50; text-align: left; flex-shrink: 0; }
+
+        /* ===== Daily Cash Summary Section ===== */
+        .cash-controls { display: flex; flex-wrap: wrap; gap: 10px; align-items: end; margin-bottom: 20px; }
+        .cash-controls .form-group { display: flex; flex-direction: column; }
+        .cash-controls label { font-size: 13px; color: #555; margin-bottom: 5px; }
+        .cash-controls input[type="date"] { padding: 8px; border: 1px solid #ccc; border-radius: 4px; }
+        .btn-cash-load { background: #3498db; color: white; border: none; padding: 10px 20px; border-radius: 5px; cursor: pointer; font-weight: bold; }
+        .btn-cash-load:hover { background: #2980b9; }
+        .btn-cash-save { background: #27ae60; color: white; border: none; padding: 10px 20px; border-radius: 5px; cursor: pointer; font-weight: bold; }
+        .btn-cash-save:hover { background: #219150; }
+        .btn-cash-load:disabled, .btn-cash-save:disabled { background: #bdc3c7; cursor: not-allowed; }
+
+        #cashStatusMsg { font-size: 14px; color: #555; margin-bottom: 15px; }
+
+        .cash-summary-grid { display: none; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 15px; }
+        .cash-card { background: #f8f9fa; border: 1px solid #eee; border-radius: 8px; padding: 18px; text-align: center; }
+        .cash-card h4 { color: #7f8c8d; font-size: 13px; margin-bottom: 10px; }
+        .cash-card input[type="number"] { width: 100%; padding: 8px; border: 1px solid #ccc; border-radius: 4px; font-size: 18px; font-weight: bold; text-align: center; color: #2c3e50; }
+        .cash-card input[readonly] { background: #eef2f3; cursor: not-allowed; color: #555; }
+        .cash-card.opening { border-top: 4px solid #3498db; }
+        .cash-card.sales { border-top: 4px solid #27ae60; }
+        .cash-card.expenses { border-top: 4px solid #e74c3c; }
+        .cash-card.closing { border-top: 4px solid #f39c12; }
+        .cash-card.closing input { color: #f39c12; }
+
+        .cash-record-status { margin-top: 15px; font-size: 13px; padding: 8px 12px; border-radius: 5px; display: inline-block; }
+        .cash-record-status.saved { background: #d4efdf; color: #1e8449; }
+        .cash-record-status.unsaved { background: #fdebd0; color: #b9770e; }
+    </style>
+</head>
+<body>
+
+    <!-- Sidebar -->
+    <div class="sidebar">
+        <h2>Islamia POS</h2>
+        <a href="../dashboard.html">Dashboard</a>
+        <a href="medicines.html">Medicines</a>
+        <a href="suppliers.html">Suppliers</a>
+        <a href="purchases.html">Purchases</a>
+        <a href="sales.html">Sales / Billing</a>
+        <a href="expenses.html">Expenses</a>
+        <a href="reports.html" style="background: #34495e; border-left: 4px solid #42b983;">Reports</a>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-content">
+        <div class="header">
+            <h2>Business Reports & Summary</h2>
+        </div>
+
+        <!-- Overall (All-time) Summary -->
+        <div class="cards-container">
+            <!-- 1. Total Purchases -->
+            <div class="card purchase">
+                <h3>Total Purchases (Stock In)</h3>
+                <p id="rep-purchases">Loading...</p>
+            </div>
+            
+            <!-- 2. Medicine Sales -->
+            <div class="card med-sale">
+                <h3>Medicine Revenue</h3>
+                <p id="rep-med-sales">Loading...</p>
+            </div>
+
+            <!-- 3. Doctor Fees -->
+            <div class="card doc-fee">
+                <h3>Total Doctor Fees</h3>
+                <p id="rep-doc-fee">Loading...</p>
+            </div>
+
+            <!-- 4. Net Revenue -->
+            <div class="card net-sale">
+                <h3>Net Sales (Grand Total)</h3>
+                <p id="rep-net-sales">Loading...</p>
+                <small id="rep-discount">Discount Given: Rs. 0</small>
+            </div>
+        </div>
+
+        <!-- ===== Monthly Sales History Section ===== -->
+        <div class="section-box">
+            <h3>📅 Monthly Sales History</h3>
+            <p style="color:#7f8c8d; font-size:14px; margin-bottom:15px;">
+                Koi bhi mahina select karke us mahine ka poora sales record dekhein. Sara data hamesha database mein mehfooz rehta hai jab tak khud delete na karein.
+            </p>
+
+            <div class="month-controls">
+                <div class="form-group">
+                    <label>Select Month</label>
+                    <input type="month" id="monthPicker">
+                </div>
+                <button type="button" id="loadMonthBtn" class="btn-load">🔍 Load Month Data</button>
+                <button type="button" id="deleteMonthBtn" class="btn-delete-month">🗑️ Delete This Month's Data</button>
+            </div>
+
+            <p id="monthStatusMsg"></p>
+
+            <!-- Mini summary cards for selected month -->
+            <div class="month-summary-cards" id="monthSummaryCards" style="display:none;">
+                <div class="mini-card">
+                    <h4>Total Bills</h4>
+                    <p id="month-bill-count">0</p>
+                </div>
+                <div class="mini-card">
+                    <h4>Medicine Total</h4>
+                    <p id="month-med-total">Rs. 0</p>
+                </div>
+                <div class="mini-card">
+                    <h4>Doctor Fees</h4>
+                    <p id="month-doc-fee">Rs. 0</p>
+                </div>
+                <div class="mini-card">
+                    <h4>Discount Given</h4>
+                    <p id="month-discount">Rs. 0</p>
+                </div>
+                <div class="mini-card">
+                    <h4>Net Grand Total</h4>
+                    <p id="month-grand-total" style="color:#27ae60;">Rs. 0</p>
+                </div>
+            </div>
+
+            <!-- Full bills list for selected month -->
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Date</th>
+                            <th>Patient</th>
+                            <th>Doctor</th>
+                            <th>Medicines</th>
+                            <th>Med Total</th>
+                            <th>Doc Fee</th>
+                            <th>Discount</th>
+                            <th>Grand Total</th>
+                        </tr>
+                    </thead>
+                    <tbody id="monthBillsBody">
+                        <tr><td colspan="8" style="text-align:center;">Select a month and click "Load Month Data".</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- ===== Expense Report Section ===== -->
+        <div class="section-box">
+            <h3>💸 Expense Report (All-Time Summary)</h3>
+            <p style="color:#7f8c8d; font-size:14px; margin-bottom:15px;">
+                Tamam expenses ka overall total aur category ke hisaab se breakdown.
+            </p>
+
+            <div class="expense-summary-cards">
+                <div class="mini-card">
+                    <h4>Total Expenses</h4>
+                    <p id="exp-total">Rs. 0</p>
+                </div>
+                <div class="mini-card">
+                    <h4>Total Entries</h4>
+                    <p id="exp-count">0</p>
+                </div>
+                <div class="mini-card">
+                    <h4>Highest Category</h4>
+                    <p id="exp-top-category" style="font-size:16px;">-</p>
+                </div>
+            </div>
+
+            <h4 style="color:#7f8c8d; margin-bottom:15px;">Category-wise Breakdown</h4>
+            <div class="category-chart" id="categoryChartContainer">
+                <p style="text-align:center; color:#7f8c8d;">Loading expense report...</p>
+            </div>
+        </div>
+
+        <!-- ===== Daily Cash Summary Section ===== -->
+        <div class="section-box">
+            <h3>💰 Daily Cash Summary</h3>
+            <p style="color:#7f8c8d; font-size:14px; margin-bottom:15px;">
+                Har din ka Opening Cash, Sales, Expenses aur Closing Cash. Opening Cash khud-ba-khud pichle din ke Closing Cash se carry hota hai.
+            </p>
+
+            <div class="cash-controls">
+                <div class="form-group">
+                    <label>Select Date</label>
+                    <input type="date" id="cashDatePicker">
+                </div>
+                <button type="button" id="loadCashBtn" class="btn-cash-load">🔍 Load Day</button>
+                <button type="button" id="saveCashBtn" class="btn-cash-save">💾 Save / Update Cash Record</button>
+            </div>
+
+            <p id="cashStatusMsg"></p>
+
+            <div class="cash-summary-grid" id="cashSummaryGrid">
+                <div class="cash-card opening">
+                    <h4>Opening Cash</h4>
+                    <input type="number" id="cashOpening" value="0">
+                </div>
+                <div class="cash-card sales">
+                    <h4>Today's Sales</h4>
+                    <input type="number" id="cashSales" value="0" readonly>
+                </div>
+                <div class="cash-card expenses">
+                    <h4>Today's Expenses</h4>
+                    <input type="number" id="cashExpenses" value="0" readonly>
+                </div>
+                <div class="cash-card closing">
+                    <h4>Closing Cash</h4>
+                    <input type="number" id="cashClosing" value="0">
+                </div>
+            </div>
+
+            <div id="cashRecordStatusBadge"></div>
+        </div>
+    </div>
+
+    <!-- JS Link -->
+    <script type="module" src="../js/reports.js"></script>
+    <script src="../js/mobile-nav.js"></script>
+</body>
+</html>

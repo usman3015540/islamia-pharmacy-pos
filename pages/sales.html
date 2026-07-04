@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sales & Clinic Billing - Islamia POS</title>
+    <link rel="stylesheet" href="../css/style.css">
+    <!-- Camera Scanner Library -->
+    <script src="https://unpkg.com/html5-qrcode"></script>
+    <style>
+        .form-container { background: white; padding: 20px; border-radius: 8px; margin-bottom: 20px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); border-top: 4px solid #27ae60; }
+        .form-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; margin-bottom: 15px; }
+        .form-group input, .form-group select { width: 100%; padding: 8px; margin-top: 5px; border: 1px solid #ccc; border-radius: 4px; }
+        .btn-add { background: #3498db; color: white; border: none; padding: 10px 20px; border-radius: 5px; cursor: pointer; font-weight: bold; width: 100%; }
+        .btn-add:hover { background: #2980b9; }
+        .btn-complete { background: #27ae60; color: white; border: none; padding: 15px 20px; border-radius: 5px; cursor: pointer; font-weight: bold; font-size: 18px; width: 100%; margin-top: 20px; }
+        .btn-complete:hover { background: #219150; }
+        .btn-scan { background: #e67e22; color: white; border: none; padding: 8px 15px; border-radius: 5px; cursor: pointer; height: 35px; }
+        
+        .table-container { background: white; padding: 20px; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); overflow-x: auto; margin-bottom: 20px;}
+        table { width: 100%; border-collapse: collapse; }
+        th, td { padding: 12px; text-align: left; border-bottom: 1px solid #ddd; }
+        th { background-color: #e8f8f5; color: #117864; }
+        #reader { width: 100%; max-width: 400px; display: none; margin-bottom: 15px; border: 2px solid #ccc; border-radius: 8px; }
+
+        /* Search Suggestion Dropdown */
+        #searchSuggestions { display:none; position:absolute; background:white; border:1px solid #ccc; width:100%; max-height:150px; overflow-y:auto; z-index:100; box-shadow: 0px 4px 6px rgba(0,0,0,0.1); }
+        #searchSuggestions div { padding: 8px; cursor: pointer; border-bottom: 1px solid #eee; }
+        #searchSuggestions div:hover { background: #f0f8ff; }
+
+        /* =========================================
+           THERMAL PRINT CSS (YE FIX KIYA HAI)
+           ========================================= */
+        @media print {
+            /* 1. Screen ki baqi saari cheezein chupa do */
+            body * { visibility: hidden; }
+            .sidebar, .main-content .header, .form-container, .table-container { display: none !important; }
+            
+            /* 2. Sirf Print section ko show karo */
+            #print-section, #print-section * { visibility: visible; }
+            
+            /* 3. Parchi ka design */
+            #print-section {
+                display: block !important;
+                position: absolute;
+                left: 0;
+                top: 0;
+                width: 300px; /* Thermal Roll Width */
+                font-family: 'Courier New', Courier, monospace;
+                font-size: 14px;
+                padding: 10px;
+                color: black;
+            }
+            .print-header { text-align: center; margin-bottom: 10px; border-bottom: 1px dashed black; padding-bottom: 10px; }
+            .print-header h3 { margin: 0; font-size: 18px; font-weight: bold; }
+            .print-table { width: 100%; margin-bottom: 10px; }
+            .print-table th, .print-table td { padding: 4px 2px; text-align: left; border-bottom: 1px dashed #ccc; font-size: 12px; }
+            .print-totals { text-align: right; border-top: 1px dashed black; padding-top: 10px; font-weight: bold; }
+        }
+    </style>
+</head>
+<body>
+    <div class="sidebar">
+        <h2>Islamia POS</h2>
+        <a href="../dashboard.html">Dashboard</a>
+        <a href="medicines.html">Medicines</a>
+        <a href="suppliers.html">Suppliers</a>
+        <a href="purchases.html">Purchases</a>
+        <a href="sales.html" style="background: #34495e; border-left: 4px solid #27ae60;">Sales / Billing</a>
+        <a href="expenses.html">Expenses</a>
+        <a href="reports.html">Reports</a>
+    </div>
+
+    <div class="main-content">
+        <div class="header"><h2>Sales & Clinic Billing</h2></div>
+
+        <!-- Barcode Scanner Camera Area -->
+        <div id="reader"></div>
+
+        <!-- 1. Patient & Doctor Details -->
+        <div class="form-container">
+            <h3>1. Patient & Doctor Details</h3>
+            <div class="form-grid">
+                <div class="form-group"><label>Patient Name</label><input type="text" id="patientName" placeholder="Walk-in Patient"></div>
+                <div class="form-group">
+                    <label>Doctor</label>
+                    <select id="doctorSelect">
+                        <option value="Only Medicine">Only Medicine (No Checkup)</option>
+                        <option value="Dr. Muhammad Asghar">Dr. Muhammad Asghar</option>
+                        <option value="Dr. Jhangir Hussain">Dr. Jhangir Hussain</option>
+                    </select>
+                </div>
+                <div class="form-group"><label>Doctor Fee (Rs)</label><input type="number" id="docFee" value="0" min="0"></div>
+                <div class="form-group"><label>Discount (Rs)</label><input type="number" id="discount" value="0" min="0"></div>
+            </div>
+        </div>
+
+        <!-- 2. Add Medicine Cart -->
+        <div class="form-container">
+            <h3>2. Add Medicine (Barcode or Search)</h3>
+            <div class="form-grid" style="align-items: end;">
+                <div class="form-group">
+                    <label>Barcode</label>
+                    <div style="display: flex; gap: 5px;">
+                        <input type="text" id="barcodeInput" placeholder="Scan or type">
+                        <button type="button" id="startScannerBtn" class="btn-scan">📷 Scan</button>
+                    </div>
+                </div>
+                <div class="form-group" style="position: relative;">
+                    <label>Search Medicine</label>
+                    <input type="text" id="searchInput" placeholder="Type name (e.g. pan...)">
+                    <div id="searchSuggestions"></div>
+                </div>
+                
+                <!-- Hidden Field for Name -->
+                <input type="hidden" id="selectedMedName">
+                
+                <div class="form-group"><label>Available Stock</label><input type="number" id="stockInput" readonly style="background:#eee;"></div>
+                <div class="form-group"><label>Price (Rs)</label><input type="number" id="priceInput" readonly style="background:#eee;"></div>
+                <div class="form-group"><label>Quantity</label><input type="number" id="qtyInput" value="1" min="1"></div>
+                <div class="form-group"><button type="button" id="addMedicineBtn" class="btn-add">➕ Add To Bill</button></div>
+            </div>
+        </div>
+
+        <!-- 3. Current Bill -->
+        <div class="table-container">
+            <h3>3. Current Bill (Cart)</h3>
+            <table>
+                <thead><tr><th>Medicine</th><th>Price</th><th>Quantity</th><th>Subtotal</th><th>Action</th></tr></thead>
+                <tbody id="billTableBody"></tbody>
+            </table>
+            
+            <!-- Totals Area -->
+            <div style="text-align: right; margin-top: 20px; font-size: 18px;">
+                <p>Medicine Total: Rs. <span id="medicineTotal">0</span></p>
+                <p>Doctor Fee: Rs. <span id="docFeeDisplay">0</span></p>
+                <p style="color: red;">Discount: - Rs. <span id="discountDisplay">0</span></p>
+                <h2 style="color: #27ae60; margin-top: 10px;">Grand Total: Rs. <span id="grandTotalSpan">0</span></h2>
+            </div>
+            
+            <button id="completeBillBtn" class="btn-complete">💾 Complete, Print & Save</button>
+        </div>
+
+        <!-- 4. Ledger -->
+        <div class="table-container">
+            <h3>Sales Ledger (Today's Bills)</h3>
+            <table>
+                <thead><tr><th>Time</th><th>Patient</th><th>Doctor</th><th>Medicines</th><th>Med Total</th><th>Discount</th><th>Grand Total</th></tr></thead>
+                <tbody id="salesLedgerBody"></tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- =========================================
+         THERMAL PRINT HIDDEN SECTION (RECEIPT)
+         ========================================= -->
+    <div id="print-section" style="display: none;">
+        <div class="print-header">
+            <h3>Islam Homeo Pathic</h3>
+            <h3>Clinic & Store</h3>
+            <small id="printDate"></small>
+        </div>
+        
+        <p><strong>Patient:</strong> <span id="printPatient"></span></p>
+        <p><strong>Doctor:</strong> <span id="printDoctor"></span></p>
+        
+        <hr style="border:0; border-top:1px dashed black; margin: 10px 0;">
+        
+        <table class="print-table">
+            <thead><tr><th>Item</th><th>Qty</th><th>Total</th></tr></thead>
+            <tbody id="printItems"></tbody>
+        </table>
+        
+        <hr style="border:0; border-top:1px dashed black; margin: 10px 0;">
+        
+        <div class="print-totals">
+            <p>Doc Fee: Rs. <span id="printDocFee"></span></p>
+            <p>Med Total: Rs. <span id="printMedTotal"></span></p>
+            <p>Discount: - Rs. <span id="printDiscount"></span></p>
+            <h3 style="margin-top: 5px; border-top: 2px solid black; padding-top: 5px;">Grand Total: Rs. <span id="printGrandTotal"></span></h3>
+        </div>
+        <p style="text-align: center; margin-top: 15px; font-size: 12px;">Thank you for your visit!<br>Get well soon.</p>
+    </div>
+
+    <!-- JS Logic Links -->
+    <script type="module" src="../js/sales.js"></script>
+    
+    <!-- UI Update Script -->
+    <script>
+        document.getElementById('docFee').addEventListener('input', updateDisplays);
+        document.getElementById('discount').addEventListener('input', updateDisplays);
+        
+        function updateDisplays() {
+            document.getElementById('docFeeDisplay').innerText = document.getElementById('docFee').value || 0;
+            document.getElementById('discountDisplay').innerText = document.getElementById('discount').value || 0;
+        }
+    </script>
+    <script src="../js/mobile-nav.js"></script>
+</body>
+</html>

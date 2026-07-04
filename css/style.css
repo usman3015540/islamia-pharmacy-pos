@@ -1,0 +1,147 @@
+/* css/style.css */
+* { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+body { background-color: #f0f2f5; display: flex; }
+
+/* Sidebar Design */
+.sidebar { width: 250px; background: #2c3e50; color: white; height: 100vh; padding: 20px 0; position: fixed; overflow-y: auto; z-index: 1000; transition: transform 0.3s ease; }
+.sidebar h2 { text-align: center; margin-bottom: 30px; font-size: 20px; color: #42b983; }
+.sidebar a { display: block; color: white; text-decoration: none; padding: 15px 25px; border-bottom: 1px solid #34495e; }
+.sidebar a:hover { background: #34495e; border-left: 4px solid #42b983; }
+
+/* Main Content Design */
+.main-content { margin-left: 250px; padding: 20px; width: calc(100% - 250px); }
+.header { display: flex; justify-content: space-between; align-items: center; background: white; padding: 15px 20px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); margin-bottom: 20px; border-radius: 8px; }
+.logout-btn { background: #e74c3c; color: white; border: none; padding: 8px 15px; border-radius: 5px; cursor: pointer; }
+.logout-btn:hover { background: #c0392b; }
+
+/* Dashboard Cards */
+.cards-container { display: flex; gap: 20px; flex-wrap: wrap; }
+.card { background: white; padding: 20px; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); flex: 1; min-width: 200px; text-align: center; border-top: 4px solid #42b983; }
+.card h3 { color: #7f8c8d; font-size: 16px; margin-bottom: 10px; }
+.card p { font-size: 24px; font-weight: bold; color: #2c3e50; }
+
+/* =========================================================
+   NAYA: MOBILE RESPONSIVE SIDEBAR (Hamburger + Off-canvas)
+   ========================================================= */
+
+/* NAYA: Hamburger button - sirf mobile par dikhega (JS dynamically inject karta hai) */
+.mobile-topbar {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 60px;
+    background: #2c3e50;
+    color: white;
+    align-items: center;
+    padding: 0 15px;
+    z-index: 1001;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+}
+.mobile-topbar .mobile-menu-btn {
+    background: none;
+    border: none;
+    color: white;
+    font-size: 24px;
+    cursor: pointer;
+    padding: 8px;
+    line-height: 1;
+}
+.mobile-topbar .mobile-topbar-title {
+    margin-left: 12px;
+    font-size: 17px;
+    font-weight: 600;
+    color: #42b983;
+}
+
+/* NAYA: Sidebar ke liye close button (sirf mobile par visible hoga) */
+.sidebar-close-btn {
+    display: none;
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    background: none;
+    border: none;
+    color: white;
+    font-size: 22px;
+    cursor: pointer;
+    padding: 6px 10px;
+    line-height: 1;
+}
+
+/* NAYA: Overlay jo sidebar khulne par background ko dim karta hai */
+.sidebar-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.45);
+    z-index: 999;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+.sidebar-overlay.active { opacity: 1; }
+
+@media (max-width: 768px) {
+    body { display: block; }
+
+    /* Mobile par sidebar off-canvas ho jaye - default hidden (left se bahar) */
+    .sidebar {
+        transform: translateX(-100%);
+        width: 260px;
+        top: 0;
+        left: 0;
+    }
+    .sidebar.mobile-open {
+        transform: translateX(0);
+        box-shadow: 4px 0 20px rgba(0,0,0,0.25);
+    }
+
+    .sidebar-close-btn { display: block; }
+
+    /* Mobile topbar dikhao */
+    .mobile-topbar { display: flex; }
+
+    /* Overlay dikhao jab sidebar khula ho */
+    .sidebar-overlay.active { display: block; }
+
+    /* Main content full width ho jaye, aur topbar ke liye top padding chahiye */
+    .main-content {
+        margin-left: 0;
+        width: 100%;
+        padding: 15px;
+        padding-top: 80px; /* mobile topbar (60px) + thoda gap */
+    }
+
+    /* Forms/grids jo desktop par multi-column thay, mobile par 1 column ho jayein */
+    .form-grid {
+        grid-template-columns: 1fr !important;
+    }
+
+    .cards-container {
+        flex-direction: column;
+    }
+    .card { min-width: 100%; }
+
+    /* Tables ko horizontally scrollable banao taake content squeeze na ho */
+    .table-container {
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+    }
+    .table-container table {
+        min-width: 600px; /* table apni natural width rakhe, container scroll kare */
+    }
+
+    .header {
+        flex-wrap: wrap;
+        gap: 10px;
+    }
+    .header h2 {
+        font-size: 18px;
+    }
+}
+
+@media (max-width: 480px) {
+    .main-content { padding: 12px; padding-top: 75px; }
+    .table-container table { min-width: 550px; }
+}

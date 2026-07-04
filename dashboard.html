@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - Islam Homeo Pathic Clinic & Store</title>
+    <!-- CSS link kar rahe hain -->
+    <link rel="stylesheet" href="css/style.css">
+    <style>
+        /* NAYA: Alert sections styling */
+        .alerts-container { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 20px; margin-top: 25px; }
+        .alert-box { background: white; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); padding: 20px; }
+        .alert-box h3 { margin-top: 0; margin-bottom: 15px; font-size: 16px; display: flex; align-items: center; gap: 8px; }
+        .alert-box.low-stock h3 { color: #e74c3c; }
+        .alert-box.expiring h3 { color: #e67e22; }
+
+        .alert-list { list-style: none; padding: 0; margin: 0; max-height: 280px; overflow-y: auto; }
+        .alert-list li { padding: 10px 12px; border-bottom: 1px solid #f0f0f0; display: flex; justify-content: space-between; align-items: center; font-size: 14px; }
+        .alert-list li:last-child { border-bottom: none; }
+        .alert-list .item-name { font-weight: bold; color: #2c3e50; }
+        .alert-list .item-meta { font-size: 12px; color: #7f8c8d; }
+        .alert-list .badge-stock { background: #e74c3c; color: white; padding: 3px 8px; border-radius: 4px; font-size: 12px; font-weight: bold; }
+        .alert-list .badge-expiry { background: #e67e22; color: white; padding: 3px 8px; border-radius: 4px; font-size: 12px; font-weight: bold; }
+        .alert-empty { color: #27ae60; text-align: center; padding: 20px; font-size: 14px; }
+    </style>
+</head>
+<body>
+
+    <!-- YAHAN ADD KIYA GAYA HAI: Mobile Topbar -->
+    <div class="mobile-topbar">
+        <button class="mobile-menu-btn" id="open-menu-btn">☰</button>
+        <div class="mobile-topbar-title">Admin Dashboard</div>
+    </div>
+
+    <!-- YAHAN ADD KIYA GAYA HAI: Sidebar Background Overlay -->
+    <div class="sidebar-overlay" id="sidebar-overlay"></div>
+
+    <!-- Sidebar (Left Menu) -->
+    <div class="sidebar" id="sidebar">
+        <!-- YAHAN ADD KIYA GAYA HAI: Close Button -->
+        <button class="sidebar-close-btn" id="close-menu-btn">✖</button>
+        
+        <h2 style="font-size: 18px; line-height: 1.4;">Islam Homeo Pathic<br>Clinic & Store</h2>
+        <a href="dashboard.html">Dashboard</a>
+        <a href="pages/medicines.html">Medicines</a>
+        <a href="pages/suppliers.html">Suppliers</a>
+        <a href="pages/purchases.html">Purchases</a>
+        <a href="pages/sales.html">Sales / Billing</a>
+        <a href="pages/expenses.html">Expenses</a>
+        <a href="pages/reports.html">Reports</a>
+    </div>
+
+    <!-- Main Content (Right Side) -->
+    <div class="main-content">
+        <div class="header">
+            <h2>Admin Dashboard</h2>
+            <button id="logoutBtn" class="logout-btn">Logout</button>
+        </div>
+
+        <!-- Stats Cards -->
+        <div class="cards-container">
+            <div class="card">
+                <h3>Total Medicines</h3>
+                <p id="total-medicines">0</p>
+            </div>
+            <div class="card">
+                <h3>Low Stock</h3>
+                <p id="low-stock" style="color: #e74c3c;">0</p>
+            </div>
+            <div class="card">
+                <h3>Today's Sales</h3>
+                <p id="today-sales">Rs. 0</p>
+            </div>
+        </div>
+
+        <!-- Low Stock & Expiring Soon Alert Lists -->
+        <div class="alerts-container">
+            <div class="alert-box low-stock">
+                <h3>⚠️ Low Stock Medicines</h3>
+                <ul class="alert-list" id="lowStockList">
+                    <li style="text-align:center; color:#7f8c8d;">Loading...</li>
+                </ul>
+            </div>
+
+            <div class="alert-box expiring">
+                <h3>⏳ Expiring Soon (within 30 days)</h3>
+                <ul class="alert-list" id="expiringSoonList">
+                    <li style="text-align:center; color:#7f8c8d;">Loading...</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <!-- Aapka Dashboard JS -->
+    <script type="module" src="js/dashboard.js"></script>
+    
+    <!-- YAHAN ADD KIYA GAYA HAI: Mobile Menu ki JavaScript -->
+    <script>
+        const openBtn = document.getElementById('open-menu-btn');
+        const closeBtn = document.getElementById('close-menu-btn');
+        const sidebar = document.getElementById('sidebar');
+        const overlay = document.getElementById('sidebar-overlay');
+
+        function toggleMenu() {
+            sidebar.classList.toggle('mobile-open');
+            overlay.classList.toggle('active');
+        }
+
+        openBtn.addEventListener('click', toggleMenu);
+        closeBtn.addEventListener('click', toggleMenu);
+        overlay.addEventListener('click', toggleMenu);
+    </script>
+    <!-- Note: Ab aapko mobile-nav.js script file ki zaroorat nahi hai, kyu ke code direct upar add kar diya gaya hai -->
+</body>
+</html>

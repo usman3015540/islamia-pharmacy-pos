@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Purchases - Islamia POS</title>
+    <!-- CSS ka link -->
+    <link rel="stylesheet" href="../css/style.css">
+    <style>
+        .form-container { background: white; padding: 20px; border-radius: 8px; margin-bottom: 20px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); border-top: 4px solid #3498db; }
+        .form-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; margin-bottom: 15px; }
+        .form-group label { display: block; margin-bottom: 5px; font-weight: bold; font-size: 13px; color: #333; }
+        .form-group input, .form-group select, .form-group textarea { width: 100%; padding: 8px; border: 1px solid #ccc; border-radius: 4px; }
+        .form-group input[readonly] { background-color: #eef2f3; cursor: not-allowed; }
+        
+        .btn-add { background: #3498db; color: white; border: none; padding: 10px 20px; border-radius: 5px; cursor: pointer; font-weight: bold; width: 100%; }
+        .btn-add:hover { background: #2980b9; }
+        .btn-complete { background: #27ae60; color: white; border: none; padding: 15px 20px; border-radius: 5px; cursor: pointer; font-weight: bold; font-size: 18px; width: 100%; margin-top: 20px; }
+        .btn-complete:hover { background: #219150; }
+        
+        .table-container { background: white; padding: 20px; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); overflow-x: auto; margin-bottom: 20px;}
+        table { width: 100%; border-collapse: collapse; font-size: 14px; }
+        th, td { padding: 12px; text-align: left; border-bottom: 1px solid #ddd; }
+        th { background-color: #e8f8f5; color: #117864; }
+        
+        /* Actions buttons in table */
+        .btn-sm { padding: 5px 10px; border: none; border-radius: 3px; cursor: pointer; color: white; font-size: 12px; margin-right: 5px; text-decoration: none;}
+        .btn-danger { background-color: #e74c3c; }
+        .btn-edit { background-color: #f39c12; }
+
+        /* NAYA: medicine exists indicator box */
+        #medExistsIndicator { display:none; grid-column: 1 / -1; padding: 10px; border-radius: 5px; background: #fef9e7; border: 1px solid #f1c40f; font-size: 13px; }
+    </style>
+</head>
+<body>
+
+    <!-- Sidebar -->
+    <div class="sidebar">
+        <h2>Islamia POS</h2>
+        <a href="../dashboard.html">Dashboard</a>
+        <a href="medicines.html">Medicines</a>
+        <a href="suppliers.html">Suppliers</a>
+        <a href="purchases.html" style="background: #34495e; border-left: 4px solid #42b983;">Purchases</a>
+        <a href="sales.html">Sales / Billing</a>
+        <a href="expenses.html">Expenses</a>
+        <a href="reports.html">Reports</a>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-content">
+        <div class="header">
+            <h2>Purchase Module (Stock Inward)</h2>
+        </div>
+
+        <!-- 1. Purchase Invoice Master Details -->
+        <div class="form-container">
+            <h3>1. Purchase Invoice Details</h3>
+            <div class="form-grid">
+                <div class="form-group">
+                    <label>System Invoice No. (Auto)</label>
+                    <input type="text" id="purSysInvoice" readonly placeholder="Generating...">
+                </div>
+                <div class="form-group">
+                    <label>Purchase Date</label>
+                    <input type="date" id="purDate" required>
+                </div>
+                <div class="form-group">
+                    <label>Supplier / Distributor</label>
+                    <input type="text" id="purSupplier" placeholder="Type or select supplier" list="supplierList" required>
+                    <datalist id="supplierList"></datalist>
+                </div>
+                <div class="form-group">
+                    <label>Company</label>
+                    <input type="text" id="purCompany" placeholder="Manufacturer Company" required>
+                </div>
+                <div class="form-group">
+                    <label>Supplier Invoice No.</label>
+                    <input type="text" id="purSupInvoice" placeholder="e.g. INV-9981" required>
+                </div>
+                <div class="form-group" style="grid-column: 1 / -1;">
+                    <label>Notes / Remarks (Optional)</label>
+                    <textarea id="purNotes" rows="2" placeholder="Any remarks regarding this purchase..."></textarea>
+                </div>
+            </div>
+        </div>
+
+        <!-- 2. Add Medicines to this Invoice -->
+        <div class="form-container">
+            <h3>2. Add Medicines to Invoice</h3>
+            <div class="form-grid" style="align-items: end;">
+                <div class="form-group">
+                    <label>Barcode (Optional)</label>
+                    <input type="text" id="medBarcode" placeholder="Scan or type">
+                </div>
+                <div class="form-group">
+                    <label>Medicine Name</label>
+                    <input type="text" id="medName" placeholder="Medicine Name" required>
+                </div>
+                <div class="form-group">
+                    <label>Batch Number</label>
+                    <input type="text" id="medBatch" placeholder="Batch No" required>
+                </div>
+                <div class="form-group">
+                    <label>Mfg Date</label>
+                    <input type="date" id="medMfgDate">
+                </div>
+                <div class="form-group">
+                    <label>Expiry Date</label>
+                    <input type="date" id="medExpiry" required>
+                </div>
+                <div class="form-group">
+                    <label>Purchase Price (Rs)</label>
+                    <input type="number" id="medPurPrice" placeholder="Per Unit" required>
+                </div>
+                <div class="form-group">
+                    <label>Sale Price (Rs)</label>
+                    <input type="number" id="medSalePrice" placeholder="Per Unit" required>
+                </div>
+                <div class="form-group">
+                    <label>Quantity</label>
+                    <input type="number" id="medQty" value="1" min="1" required>
+                </div>
+
+                <!-- NAYA: Live "already exists" indicator -->
+                <div id="medExistsIndicator"></div>
+
+                <div class="form-group">
+                    <button type="button" id="addMedToCartBtn" class="btn-add">➕ Add to Invoice</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- 3. Current Purchase Cart -->
+        <div class="table-container">
+            <h3>3. Invoice Items (Cart)</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Medicine</th>
+                        <th>Batch / Exp</th>
+                        <th>Pur. Price</th>
+                        <th>Sale Price</th>
+                        <th>Qty</th>
+                        <th>Subtotal</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody id="purchaseCartBody">
+                    <!-- Cart items will appear here -->
+                </tbody>
+            </table>
+            
+            <div style="text-align: right; margin-top: 20px; font-size: 22px;">
+                <h2 style="color: #3498db;">Total Invoice Amount: Rs. <span id="grandTotalSpan">0</span></h2>
+            </div>
+            
+            <button id="saveCompletePurchaseBtn" class="btn-complete">💾 Save Purchase & Update Stock</button>
+        </div>
+
+        <!-- 4. Purchase History Ledger -->
+        <div class="table-container">
+            <h3>Purchase History (Recent Invoices)</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Date</th>
+                        <th>System Inv #</th>
+                        <th>Supplier</th>
+                        <th>Medicines</th>
+                        <th>Total Amount</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody id="purchaseHistoryBody">
+                    <!-- History will load here -->
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- JS Link -->
+    <script type="module" src="../js/purchases.js"></script>
+    <script src="../js/mobile-nav.js"></script>
+</body>
+</html>

@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Medicines - Islamia POS</title>
+    <link rel="stylesheet" href="../css/style.css">
+    <!-- html5-qrcode library add ki hai Mobile Camera Barcode ke liye -->
+    <script src="https://unpkg.com/html5-qrcode"></script>
+    <style>
+        .form-container { background: white; padding: 20px; border-radius: 8px; margin-bottom: 20px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+        .form-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; margin-bottom: 15px; }
+        .form-group input { width: 100%; padding: 8px; margin-top: 5px; border: 1px solid #ccc; border-radius: 4px; }
+        .btn-add { background: #3498db; color: white; border: none; padding: 10px 20px; border-radius: 5px; cursor: pointer; }
+        .btn-add:hover { background: #2980b9; }
+        .btn-scan { background: #e67e22; color: white; border: none; padding: 8px 15px; border-radius: 5px; cursor: pointer; margin-top: 24px; height: 35px; }
+        .btn-scan:hover { background: #d35400; }
+        
+        .table-container { background: white; padding: 20px; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); overflow-x: auto; }
+        table { width: 100%; border-collapse: collapse; }
+        th, td { padding: 12px; text-align: left; border-bottom: 1px solid #ddd; }
+        th { background-color: #f8f9fa; }
+        #reader { width: 100%; max-width: 400px; display: none; margin-bottom: 15px; border: 2px solid #ccc; border-radius: 8px; }
+        
+        .btn-edit { background: #f39c12; color: white; border: none; padding: 6px 12px; border-radius: 4px; cursor: pointer; margin-right: 5px; }
+        .btn-edit:hover { background: #e67e22; }
+        .btn-delete { background: #e74c3c; color: white; border: none; padding: 6px 12px; border-radius: 4px; cursor: pointer; }
+        .btn-delete:hover { background: #c0392b; }
+        .action-cell { min-width: 130px; }
+
+        /* NAYA: Search bar styling */
+        .search-bar-container { margin-bottom: 15px; position: relative; max-width: 400px; }
+        .search-bar-container input { width: 100%; padding: 10px 15px 10px 35px; border: 1px solid #ccc; border-radius: 6px; font-size: 14px; }
+        .search-bar-container::before { content: "🔍"; position: absolute; left: 10px; top: 50%; transform: translateY(-50%); font-size: 14px; }
+    </style>
+</head>
+<body>
+
+    <!-- Sidebar -->
+    <div class="sidebar">
+        <h2>Islamia POS</h2>
+        <a href="../dashboard.html">Dashboard</a>
+        <a href="medicines.html" style="background: #34495e; border-left: 4px solid #42b983;">Medicines</a>
+        <a href="suppliers.html">Suppliers</a>
+        <a href="purchases.html">Purchases</a>
+        <a href="sales.html">Sales / Billing</a>
+        <a href="expenses.html">Expenses</a>
+        <a href="reports.html">Reports</a>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-content">
+        <div class="header">
+            <h2>Manage Medicines & Inventory</h2>
+        </div>
+
+        <!-- Barcode Scanner Camera Area (Hidden by default) -->
+        <div id="reader"></div>
+
+        <!-- Add/Edit Medicine Form -->
+        <div class="form-container">
+            <h3 id="formTitle">Add New Medicine</h3>
+            <form id="addMedicineForm">
+                <!-- Hidden input for Edit Mode -->
+                <input type="hidden" id="editMedId" value="">
+                
+                <div class="form-grid">
+                    
+                    <!-- Barcode Input and Scan Button -->
+                    <div class="form-group" style="display: flex; gap: 10px; align-items: start;">
+                        <div style="flex-grow: 1;">
+                            <label>Barcode</label>
+                            <input type="text" id="medBarcode" placeholder="Scan or enter barcode">
+                        </div>
+                        <button type="button" id="startScannerBtn" class="btn-scan">📷 Scan</button>
+                    </div>
+                    
+                    <!-- Medicine Name with Auto-suggestions -->
+                    <div class="form-group">
+                        <label>Medicine Name</label>
+                        <input type="text" id="medName" list="medicineSuggestions" required>
+                        <datalist id="medicineSuggestions"></datalist>
+                    </div>
+                    
+                    <!-- Company/Supplier with Auto-suggestions -->
+                    <div class="form-group">
+                        <label>Company/Supplier</label>
+                        <input type="text" id="medCompany" list="supplierSuggestions" required>
+                        <datalist id="supplierSuggestions"></datalist>
+                    </div>
+                    
+                    <div class="form-group"><label>Category</label><input type="text" id="medCategory" required></div>
+                    <div class="form-group"><label>Batch Number</label><input type="text" id="medBatch"></div>
+                    <div class="form-group"><label>Expiry Date</label><input type="date" id="medExpiry" required></div>
+                    <div class="form-group"><label>Purchase Price (Rs)</label><input type="number" id="medPurPrice" required></div>
+                    <div class="form-group"><label>Sale Price (Rs)</label><input type="number" id="medSalePrice" required></div>
+                    <div class="form-group"><label>Stock Quantity</label><input type="number" id="medStock" required></div>
+                </div>
+                <button type="submit" class="btn-add" id="submitBtn">Save Medicine</button>
+                <button type="button" class="btn-delete" id="cancelEditBtn" style="display: none; margin-left: 10px;">Cancel Edit</button>
+            </form>
+        </div>
+
+        <!-- Medicines Table -->
+        <div class="table-container">
+            <h3>Medicines List</h3>
+
+            <!-- NAYA: Search Bar -->
+            <div class="search-bar-container">
+                <input type="text" id="medicineSearchInput" placeholder="Search by name or barcode...">
+            </div>
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>Name / Barcode</th>
+                        <th>Company</th>
+                        <th>Category</th>
+                        <th>Stock</th>
+                        <th>Pur. Price</th>
+                        <th>Sale Price</th>
+                        <th>Expiry</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody id="medicinesList">
+                    <!-- Data will load here -->
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- JS Link -->
+    <script type="module" src="../js/medicines.js"></script>
+    <script src="../js/mobile-nav.js"></script>
+</body>
+</html>

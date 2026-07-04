@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Expenses - Islamia POS</title>
+    <link rel="stylesheet" href="../css/style.css">
+    <style>
+        .form-container { background: white; padding: 20px; border-radius: 8px; margin-bottom: 20px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); border-top: 4px solid #e74c3c; }
+        .form-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; margin-bottom: 15px; }
+        .form-group label { font-size: 13px; color: #555; display: block; margin-bottom: 5px; }
+        .form-group input, .form-group select, .form-group textarea { width: 100%; padding: 8px; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box; }
+        .form-group textarea { resize: vertical; min-height: 38px; }
+
+        .btn-save { background: #e74c3c; color: white; border: none; padding: 12px 25px; border-radius: 5px; cursor: pointer; font-weight: bold; font-size: 16px; }
+        .btn-save:hover { background: #c0392b; }
+        .btn-cancel-edit { background: #95a5a6; color: white; border: none; padding: 12px 20px; border-radius: 5px; cursor: pointer; font-weight: bold; margin-left: 10px; display: none; }
+        .btn-cancel-edit:hover { background: #7f8c8d; }
+
+        .table-container { background: white; padding: 20px; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); overflow-x: auto; }
+        table { width: 100%; border-collapse: collapse; }
+        th, td { padding: 10px; text-align: left; border-bottom: 1px solid #ddd; font-size: 14px; white-space: nowrap; }
+        th { background-color: #fdecea; color: #c0392b; }
+
+        .filter-bar { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 15px; align-items: end; }
+        .filter-bar .form-group { min-width: 150px; flex: 1; }
+
+        .btn-edit { background: #3498db; color: white; border: none; padding: 5px 10px; border-radius: 3px; cursor: pointer; margin-right: 5px; }
+        .btn-delete { background: #e74c3c; color: white; border: none; padding: 5px 10px; border-radius: 3px; cursor: pointer; }
+
+        .badge { padding: 3px 8px; border-radius: 4px; font-size: 12px; font-weight: bold; color: white; }
+        .badge-cash { background: #27ae60; }
+        .badge-bank { background: #2980b9; }
+        .badge-online { background: #8e44ad; }
+
+        #expenseTotalBar { text-align: right; font-size: 16px; font-weight: bold; margin-top: 10px; color: #2c3e50; }
+    </style>
+</head>
+<body>
+    <div class="sidebar">
+        <h2>Islamia POS</h2>
+        <a href="../dashboard.html">Dashboard</a>
+        <a href="medicines.html">Medicines</a>
+        <a href="suppliers.html">Suppliers</a>
+        <a href="purchases.html">Purchases</a>
+        <a href="sales.html">Sales / Billing</a>
+        <a href="expenses.html" style="background: #34495e; border-left: 4px solid #e74c3c;">Expenses</a>
+        <a href="reports.html">Reports</a>
+    </div>
+
+    <div class="main-content">
+        <div class="header"><h2>Expense Management (Cash Book)</h2></div>
+
+        <!-- 1. Add / Edit Expense Form -->
+        <div class="form-container">
+            <h3 id="formTitle">➕ Add New Expense</h3>
+            <input type="hidden" id="editExpenseId">
+
+            <div class="form-grid">
+                <div class="form-group">
+                    <label>Expense ID</label>
+                    <input type="text" id="expenseIdDisplay" readonly placeholder="Auto Generated" style="background:#eee;">
+                </div>
+                <div class="form-group">
+                    <label>Date</label>
+                    <input type="date" id="expDate">
+                </div>
+                <div class="form-group">
+                    <label>Expense Category</label>
+                    <select id="expCategory">
+                        <option value="Doctor Salary">Doctor Salary</option>
+                        <option value="Staff Salary">Staff Salary</option>
+                        <option value="Medicine Purchase">Medicine Purchase</option>
+                        <option value="Rent">Rent</option>
+                        <option value="Electricity Bill">Electricity Bill</option>
+                        <option value="Gas Bill">Gas Bill</option>
+                        <option value="Internet Bill">Internet Bill</option>
+                        <option value="Water Bill">Water Bill</option>
+                        <option value="Food / Lunch">Food / Lunch</option>
+                        <option value="Tea / Coffee">Tea / Coffee</option>
+                        <option value="Cleaning">Cleaning</option>
+                        <option value="Transport">Transport</option>
+                        <option value="Maintenance">Maintenance</option>
+                        <option value="Office Supplies">Office Supplies</option>
+                        <option value="Other">Other</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Amount (Rs)</label>
+                    <input type="number" id="expAmount" min="0" placeholder="0">
+                </div>
+                <div class="form-group">
+                    <label>Payment Method</label>
+                    <select id="expPaymentMethod">
+                        <option value="Cash">Cash</option>
+                        <option value="Bank">Bank</option>
+                        <option value="Online">Online</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Paid To (Person / Shop Name)</label>
+                    <input type="text" id="expPaidTo" placeholder="e.g. WAPDA, Ali Cleaning Services">
+                </div>
+                <div class="form-group" style="grid-column: 1 / -1;">
+                    <label>Description</label>
+                    <textarea id="expDescription" rows="2" placeholder="Expense ki tafseel..."></textarea>
+                </div>
+                <div class="form-group" style="grid-column: 1 / -1;">
+                    <label>Notes (Optional)</label>
+                    <textarea id="expNotes" rows="2" placeholder="Koi extra note..."></textarea>
+                </div>
+                <div class="form-group">
+                    <label>Upload Receipt (Image/PDF)</label>
+                    <input type="file" id="expReceiptFile" accept="image/*,application/pdf" disabled style="background:#eee; cursor:not-allowed;">
+                    <small style="color:#e67e22;">⚠️ Abhi disabled hai — Firebase Storage subscription lene ke baad activate hoga.</small>
+                </div>
+            </div>
+
+            <button type="button" id="saveExpenseBtn" class="btn-save">💾 Save Expense</button>
+            <button type="button" id="cancelEditBtn" class="btn-cancel-edit">✖ Cancel Edit</button>
+        </div>
+
+        <!-- 2. Filters -->
+        <div class="form-container">
+            <h3>🔍 Search & Filter</h3>
+            <div class="filter-bar">
+                <div class="form-group">
+                    <label>Date</label>
+                    <input type="date" id="filterDate">
+                </div>
+                <div class="form-group">
+                    <label>Category</label>
+                    <select id="filterCategory">
+                        <option value="">All Categories</option>
+                        <option value="Doctor Salary">Doctor Salary</option>
+                        <option value="Staff Salary">Staff Salary</option>
+                        <option value="Medicine Purchase">Medicine Purchase</option>
+                        <option value="Rent">Rent</option>
+                        <option value="Electricity Bill">Electricity Bill</option>
+                        <option value="Gas Bill">Gas Bill</option>
+                        <option value="Internet Bill">Internet Bill</option>
+                        <option value="Water Bill">Water Bill</option>
+                        <option value="Food / Lunch">Food / Lunch</option>
+                        <option value="Tea / Coffee">Tea / Coffee</option>
+                        <option value="Cleaning">Cleaning</option>
+                        <option value="Transport">Transport</option>
+                        <option value="Maintenance">Maintenance</option>
+                        <option value="Office Supplies">Office Supplies</option>
+                        <option value="Other">Other</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Payment Method</label>
+                    <select id="filterPaymentMethod">
+                        <option value="">All Methods</option>
+                        <option value="Cash">Cash</option>
+                        <option value="Bank">Bank</option>
+                        <option value="Online">Online</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Min Amount</label>
+                    <input type="number" id="filterMinAmount" placeholder="0">
+                </div>
+                <div class="form-group">
+                    <label>Max Amount</label>
+                    <input type="number" id="filterMaxAmount" placeholder="999999">
+                </div>
+                <div class="form-group">
+                    <button type="button" id="clearFiltersBtn" class="btn-cancel-edit" style="display:inline-block;">✖ Clear Filters</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- 3. Expense History Table -->
+        <div class="table-container">
+            <h3>📋 Expense History</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Date</th>
+                        <th>Category</th>
+                        <th>Description</th>
+                        <th>Paid To</th>
+                        <th>Amount</th>
+                        <th>Payment Method</th>
+                        <th>Receipt</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody id="expenseTableBody">
+                    <tr><td colspan="9" style="text-align:center;">Loading expenses...</td></tr>
+                </tbody>
+            </table>
+            <div id="expenseTotalBar">Total (filtered): Rs. 0</div>
+        </div>
+    </div>
+
+    <script type="module" src="../js/expenses.js"></script>
+    <script src="../js/mobile-nav.js"></script>
+</body>
+</html>

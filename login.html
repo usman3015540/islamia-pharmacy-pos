@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - Islamia Pharmacy</title>
+
+    <!-- Google Fonts: Poppins (landing page jaisa hi font) -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <!-- FontAwesome for Icons (eye icon ke liye) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        * { box-sizing: border-box; }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            background: linear-gradient(135deg, #064e3b 0%, #047857 50%, #059669 100%);
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* Decorative background circles */
+        body::before, body::after {
+            content: "";
+            position: absolute;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.06);
+        }
+        body::before { width: 400px; height: 400px; top: -150px; right: -100px; }
+        body::after { width: 300px; height: 300px; bottom: -100px; left: -80px; }
+
+        .login-box {
+            background: white;
+            padding: 40px 35px;
+            border-radius: 18px;
+            box-shadow: 0 20px 60px -10px rgba(0,0,0,0.3);
+            text-align: center;
+            width: 100%;
+            max-width: 380px;
+            position: relative;
+            z-index: 10;
+        }
+
+        .login-logo {
+            width: 64px;
+            height: 64px;
+            margin: 0 auto 18px;
+            background: #059669;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 28px;
+            box-shadow: 0 8px 20px rgba(5,150,105,0.35);
+        }
+
+        .login-box h2 {
+            margin: 0 0 6px;
+            font-size: 24px;
+            font-weight: 700;
+            color: #111827;
+        }
+
+        .login-subtitle {
+            color: #6b7280;
+            font-size: 13px;
+            margin-bottom: 28px;
+        }
+
+        .input-group {
+            position: relative;
+            margin-bottom: 18px;
+            text-align: left;
+        }
+
+        .input-group label {
+            display: block;
+            font-size: 12px;
+            font-weight: 600;
+            color: #374151;
+            margin-bottom: 6px;
+        }
+
+        .input-group input {
+            width: 100%;
+            padding: 12px 14px;
+            border: 1.5px solid #e5e7eb;
+            border-radius: 10px;
+            font-size: 14px;
+            font-family: inherit;
+            transition: border-color 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .input-group input:focus {
+            outline: none;
+            border-color: #059669;
+            box-shadow: 0 0 0 3px rgba(5,150,105,0.12);
+        }
+
+        /* NAYA: Password field + eye icon ke liye extra padding */
+        .password-wrapper { position: relative; }
+        .password-wrapper input { padding-right: 42px; }
+
+        .toggle-password-btn {
+            position: absolute;
+            right: 12px;
+            top: 50%;
+            /* Label ki height ki wajah se thoda adjust kiya hai */
+            transform: translateY(calc(-50% + 13px));
+            background: none;
+            border: none;
+            cursor: pointer;
+            color: #9ca3af;
+            font-size: 16px;
+            padding: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: color 0.2s ease;
+        }
+        .toggle-password-btn:hover { color: #059669; }
+
+        button#loginBtn {
+            width: 100%;
+            padding: 13px;
+            background: #059669;
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            margin-top: 8px;
+            transition: background 0.2s ease, transform 0.15s ease;
+        }
+        button#loginBtn:hover { background: #047857; }
+        button#loginBtn:active { transform: scale(0.98); }
+        button#loginBtn:disabled { background: #9ca3af; cursor: not-allowed; }
+
+        #error-msg {
+            color: #dc2626;
+            font-size: 13px;
+            margin-top: 14px;
+            margin-bottom: 0;
+            min-height: 18px;
+        }
+
+        .back-link {
+            display: inline-block;
+            margin-top: 22px;
+            font-size: 13px;
+            color: #6b7280;
+            text-decoration: none;
+        }
+        .back-link:hover { color: #059669; }
+        .back-link i { margin-right: 4px; }
+    </style>
+</head>
+<body>
+
+    <div class="login-box">
+        <div class="login-logo">
+            <i class="fa-solid fa-leaf"></i>
+        </div>
+        <h2>Admin Login</h2>
+        <p class="login-subtitle">Islam Homeo Pathic Clinic & Store</p>
+
+        <div class="input-group">
+            <label for="email">Email Address</label>
+            <input type="email" id="email" placeholder="admin@islamia.com">
+        </div>
+
+        <div class="input-group">
+            <label for="password">Password</label>
+            <div class="password-wrapper">
+                <input type="password" id="password" placeholder="Enter your password">
+                <!-- NAYA: Show/Hide Password Eye Icon -->
+                <button type="button" id="togglePasswordBtn" class="toggle-password-btn" aria-label="Show password" tabindex="-1">
+                    <i class="fa-solid fa-eye" id="toggleEyeIcon"></i>
+                </button>
+            </div>
+        </div>
+
+        <button id="loginBtn">Login</button>
+        <p id="error-msg"></p>
+
+        <a href="index.html" class="back-link"><i class="fa-solid fa-arrow-left"></i>Back to Website</a>
+    </div>
+
+    <!-- JS file ko link kar rahe hain. type="module" likhna zaroori hai Firebase ke liye -->
+    <script type="module" src="js/auth.js"></script>
+
+    <!-- NAYA: Show/Hide Password Logic -->
+    <script>
+        const togglePasswordBtn = document.getElementById("togglePasswordBtn");
+        const toggleEyeIcon = document.getElementById("toggleEyeIcon");
+        const passwordInput = document.getElementById("password");
+
+        togglePasswordBtn.addEventListener("click", () => {
+            const isHidden = passwordInput.type === "password";
+            passwordInput.type = isHidden ? "text" : "password";
+
+            toggleEyeIcon.classList.toggle("fa-eye", !isHidden);
+            toggleEyeIcon.classList.toggle("fa-eye-slash", isHidden);
+
+            togglePasswordBtn.setAttribute("aria-label", isHidden ? "Hide password" : "Show password");
+        });
+    </script>
+</body>
+</html>
