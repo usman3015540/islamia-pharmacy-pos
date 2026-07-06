@@ -76,3 +76,8 @@ GitHub: https://github.com/usman3015540
 
 ### 🧾 Bill Generation
 ![Bill](screenshots/Bill.png)
+## Firebase Setup
+
+This project requires your own Firebase project.
+
+Update `js/firebase-config.js` with your Firebase configuration before running the application.
