@@ -48,3 +48,31 @@ GitHub: https://github.com/usman3015540
 
 ---
 ⭐ If you like this project, don't forget to star the repository.
+## 📸 Project Screenshots
+
+### 🏠 Home Page
+![Home](screenshots/home.png)
+
+### 🔐 Login
+![Login](screenshots/login.png)
+
+### 📊 Dashboard
+![Dashboard](screenshots/dashboard.png)
+
+### 💊 Medicine Management
+![Medicines](screenshots/medicines.png)
+
+### 🛒 Sales
+![Sales](screenshots/sales.png)
+
+### 📦 Purchases
+![Purchases](screenshots/purchases.png)
+
+### 📈 Reports
+![Reports](screenshots/reports.png)
+
+### 💰 Expense Management
+![Expenses](screenshots/expense.png)
+
+### 🧾 Bill Generation
+![Bill](screenshots/Bill.png)
